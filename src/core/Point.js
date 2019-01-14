@@ -27,5 +27,5 @@ export default class Point {
   get x () { return this._x }
   get y () { return this._y }
   get rad () { return Math.atan2(this.x, this.y) }
-  get len () { return Math.sqrt(this.x ^ 2 + this.y ^ 2) }
+  get len () { return Math.sqrt(this.x ** 2 + this.y ** 2) }
 }

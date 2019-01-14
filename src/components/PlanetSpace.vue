@@ -16,22 +16,22 @@
           </r-cont>
         </r-cont>
         <r-cont :ch="planet2pos.s * 110" rotate-dur="18000" orbit-line="5px dotted #ffffff40">
-          <planet :size="planet2pos.s * 15" color="#99aacc"></planet>
+          <planet  :rdur="-8000" :size="planet2pos.s * 15" color="#99aacc"></planet>
         </r-cont>
 
-        <planet ref="planet2" :size="planet2pos.s * 100" color="#37b" @click="changePlanet('planet2')"></planet>
+        <planet ref="planet2" :rdur="-16000" :size="planet2pos.s * 100" color="#37b" @click="changePlanet('planet2')"></planet>
       </e-cont>
 
       <e-cont class="planet1" :x="planet1pos.x" :y="planet1pos.y">
         <r-cont :ch="planet1pos.s * 125" rotate-dur="18000" orbit-line="1px dotted #aaddff99">
-          <planet :size="planet1pos.s * 10" color="#ddd"></planet>
+          <planet :rdur="3500" :size="planet1pos.s * 10" color="#ddd"></planet>
         </r-cont>
 
-        <planet ref="planet1" :size="planet1pos.s * 100" color="#acd" @click="changePlanet('planet1')"></planet>
+        <planet ref="planet1" :rdur="25000" :size="planet1pos.s * 100" color="#acd" @click="changePlanet('planet1')"></planet>
       </e-cont>
 
       <e-cont class="planet3" :s="planet3pos.s" :x="planet3pos.x" :y="planet3pos.y">
-        <planet ref="planet3" color="#f8d899" @click="changePlanet('planet3')"></planet>
+        <planet ref="planet3" :rdur="10000" color="#f8d899" @click="changePlanet('planet3')"></planet>
       </e-cont>
 
       <e-cont class="cnfy-planet" :s="cnfyPlanetPos.s" :x="cnfyPlanetPos.x" :y="cnfyPlanetPos.y" :dur="4500">
@@ -56,6 +56,7 @@ import BgStars from '@/components/BgStars'
 import ECont from '@/components/core/ECont'
 import RCont from '@/components/core/RCont'
 import CnfyAction from '@/components/CnfyAction'
+// import MofCloud from '@/components/MofCloud'
 import Time from '@/core/Time'
 
 const DEFAULT_PLANET_SIZE = 100

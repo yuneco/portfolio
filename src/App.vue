@@ -8,6 +8,9 @@
 html, body {
   height: 100%;
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
 }
 div {
   box-sizing: border-box;
@@ -19,22 +22,14 @@ div {
   text-align: center;
   color: #2c3e50;
 }
-#nav {
-  display: none;
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
 </style>
 
 <script>
 import AppBackView from '@/AppBack'
 export default {
-  components: { AppBackView }
+  components: { AppBackView },
+  mounted () {
+    this.$store.dispatch('loadGalleryMetas')
+  }
 }
 </script>

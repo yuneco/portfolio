@@ -4,8 +4,8 @@
     <div class="menu">
       <menu-box ref="menu" :items="menuItems"
       @selected="menuSelected"
-      :sel="menuState.selected"
-      :mode="menuState.mode"
+      :sel="currentMenuItem ? currentMenuItem.text : ''"
+      :mode="isTopPage ? 'stack' : 'line'"
     ></menu-box>
     </div>
 
@@ -20,7 +20,7 @@
       ></planet-space>
     </div>
 
-    <div class="page-content" v-show="menuState.mode === 'line'">
+    <div class="page-content" v-show="!this.isTopPage">
       <router-view/>
     </div>
 
@@ -35,6 +35,7 @@
   left: 0;
   width: 100%;
   height: 100%;
+  overflow: hidden;
 }
 .stage {
   border: 1px solid gray;
@@ -76,6 +77,14 @@ import Gradient from '@/core/Gradient'
 import Time from '@/core/Time'
 import MenuBox from '@/components/MenuBox'
 
+const MENUDEF = [
+  { text: 'Top', path: '/', showOnTop: false },
+  { text: 'Gallery', path: '/gallery', showOnTop: true },
+  { text: 'Apps & PG', path: '/apps', showOnTop: true },
+  { text: 'Contact', path: '/contact', showOnTop: true },
+  { text: 'Adm', path: '/adm/upload', showOnTop: true }
+]
+
 export default {
   name: 'AppBackView',
   components: { PlanetSpace, MenuBox },
@@ -86,22 +95,28 @@ export default {
       spaceX: 0,
       spaceY: 0,
       perspective: 1000,
-      isInitialResized: false,
-      blurStage: false,
-      menuState: {
-        selected: 'Top',
-        mode: 'stack'
-      }
+      isInitialResized: false
     }
   },
   computed: {
     spaceBg () {
       return new Gradient(['#006987', '#020751']).toString()
     },
+    currentMenuItem () {
+      return MENUDEF.find(item => item.path === this.$route.path)
+    },
+    isTopPage () {
+      return this.$route.path === '/'
+    },
+    topMenuItem () {
+      return MENUDEF.find(item => item.path === '/')
+    },
     menuItems () {
-      return (this.menuState.selected === 'Top' ? [] : ['Top']).concat(
-        ['Gallery', 'Apps & PG', 'Contact']
-      )
+      const items = MENUDEF.filter(item => item.showOnTop || !this.isTopPage)
+      return items.map(item => item.text)
+    },
+    blurStage () {
+      return !this.isTopPage
     }
   },
   mounted () {
@@ -111,7 +126,6 @@ export default {
   destroyed () {
     window.removeEventListener('resize', this.adjustStageSize)
   },
-
   methods: {
     async adjustStageSize (ev, force) {
       const beforeWidth = document.body.offsetWidth
@@ -126,14 +140,12 @@ export default {
       this.stageHeight = stage.offsetHeight
     },
     menuSelected (item) {
-      this.$data.menuState.selected = item || ''
-      this.$data.menuState.mode = item === 'Top' ? 'stack' : 'line'
-      this.$data.blurStage = item !== 'Top'
       const path = ({
         'Top': '/',
-        'Gallery': 'gallery',
-        'Apps & PG': 'apps',
-        'Contact': 'contact'
+        'Gallery': '/gallery',
+        'Apps & PG': '/apps',
+        'Contact': '/contact',
+        'Adm': '/adm/upload'
       })[item] || ''
       this.$router.push(path)
     }

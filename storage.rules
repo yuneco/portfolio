@@ -1,0 +1,9 @@
+service firebase.storage {
+  match /b/{bucket}/o {
+	  match /public/{allpath=**} {
+    	allow read
+    	allow write: if request.auth.token.email == 'yukiyuneco@gmail.com'
+      	&& request.resource.contentType.matches('image/.*')
+    }
+  }
+}

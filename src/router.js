@@ -36,6 +36,11 @@ export default new Router({
       path: '/contact',
       name: 'contactView',
       component: ContactView
+    },
+    {
+      path: '/adm/upload',
+      name: 'AdminUploadImage',
+      component: () => import(/* webpackChunkName: "admin-group" */ './admin/views/ImgUploader.vue')
     }
   ]
 })

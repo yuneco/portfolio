@@ -1,17 +1,19 @@
 <template>
   <div class="list-root">
-    <div class="scroller" :style="{
+    <div class="scroller" v-if="width > 0" :style="{
       height: `${totalListHeight}px`
     }">
-      <div class="item-box" v-for="item in itemWithPoses" :key="item.src">
+      <div class="item-box" v-for="item in itemWithPoses" :key="item.id">
         <photo-item  ref="itemRef"
-          :title="item.title"
-          :src="item.src"
-          :left="item.left"
-          :top="item.top"
-          :width="item.width"
-          :height="item.height"
-          :selected="item.src === selectedId"
+          :title="item.meta.title"
+          :src="item.meta.org.url"
+          :thumbSrc="item.meta.thumb.url"
+          :basecolor="item.meta.colors.main"
+          :left="item.pos.left"
+          :top="item.pos.top"
+          :width="item.pos.width"
+          :height="item.pos.height"
+          :selected="item.id === selectedId"
           @click="clickItem(item)"
           ></photo-item>
       </div>
@@ -22,7 +24,7 @@
 <style lang="scss" scoped>
 .list-root {
   position: absolute;
-  background: #99ffff19;
+  // background: #99ffff19;
   box-sizing: border-box;
   width: 100%;
   height: 100%;
@@ -48,31 +50,16 @@ export default {
   components: { PhotoItem },
   props: {
     defaultColWidth: { type: Number, default: 150 },
-    minMargin: { type: Number, default: 20 }
+    minMargin: { type: Number, default: 20 },
+    metas: { type: Array, default: () => ([]) }
   },
   data () {
     return {
       selectedId: null,
-      width: 100
+      width: 0
     }
   },
   computed: {
-    items () {
-      // ダミーデータ //
-      return Array(25).fill(0).map((v, i) => {
-        const w = Math.random() * 500 + 300
-        const h = Math.random() * 500 + 300
-        return {
-          title: `title-${i}`,
-          src: `src-${i}`,
-          thumb: `thumb-${i}`,
-          thumbWidth: w * 0.3,
-          thumbHeight: h * 0.3,
-          srcWidth: w,
-          srcHeight: h
-        }
-      })
-    },
     isSelected () {
       return !!this.selectedId
     },
@@ -90,14 +77,14 @@ export default {
     },
     selItemFloatPos () {
       if (!this.selectedId) { return null }
-      const selItem = this.items.find(item => item.src === this.selectedId)
-      if (!selItem) { return null }
+      const selMeta = this.metas.find(meta => meta.filename === this.selectedId)
+      if (!selMeta) { return null }
       const parent = this.$el
       const pw = parent.offsetWidth
       const ph = parent.offsetHeight
-      const r = Math.min(1, Math.min(pw / selItem.srcWidth, ph / selItem.srcHeight))
-      const width = selItem.srcWidth * r
-      const height = selItem.srcHeight * r
+      const r = Math.min(1, Math.min(pw / selMeta.org.width, ph / selMeta.org.height))
+      const width = selMeta.org.width * r
+      const height = selMeta.org.height * r
       const left = (pw - width) / 2
       const top = (ph - height) / 2 + parent.scrollTop
       return { left, top, width, height }
@@ -108,21 +95,21 @@ export default {
       const outerMarginX = marginX / 2
       const marginY = this.minMargin
       const selPos = this.selItemFloatPos
-      return this.items.map((item) => {
-        const isSelected = item.src === this.selectedId
+      return this.metas.map((meta) => {
+        const isSelected = meta.filename === this.selectedId
         const minH = Math.min(...accHeightOfCols)
         const targetColIndex = accHeightOfCols.findIndex(v => v === minH)
         const left = targetColIndex * (marginX + this.colWidth) + outerMarginX
         const top = accHeightOfCols[targetColIndex] + marginY
         const width = this.colWidth
-        const height = width / item.thumbWidth * item.thumbHeight
+        const height = width / meta.org.width * meta.org.height
         accHeightOfCols[targetColIndex] += height + marginY
         const itemPos = { left, top, width, height }
         const isUseSelPos = isSelected && !this.isSerialView
         return {
-          id: item.src,
-          ...(isUseSelPos ? selPos : itemPos),
-          ...item }
+          id: meta.filename,
+          pos: isUseSelPos ? selPos : itemPos,
+          meta: meta }
       })
     },
     selItemPos () {
@@ -130,7 +117,7 @@ export default {
       return this.itemWithPoses.find(item => item.id === this.selectedId)
     },
     totalListHeight () {
-      return Math.max(...this.itemWithPoses.map(item => item.top + item.height))
+      return Math.max(...this.itemWithPoses.map(item => item.pos.top + item.pos.height))
     }
   },
   mounted () {
@@ -162,8 +149,8 @@ export default {
       const item = this.itemWithPoses.find(item => item.id === id)
       if (!item) { return }
       await Time.wait(0) // wait apply .scroller height
-      const offset = (this.$el.offsetHeight - item.height) / 2
-      const top = Math.max(0, item.top - offset)
+      const offset = (this.$el.offsetHeight - item.pos.height) / 2
+      const top = Math.max(0, item.pos.top - offset)
       this.$el.scrollTop = Math.max(0, top)
     },
     clickItem (item) {
@@ -181,7 +168,7 @@ export default {
       }[scrollDir] || 0.5
       const center = this.$el.offsetHeight * breakRate + this.$el.scrollTop
 
-      const selItem = this.itemWithPoses.find(item => item.top < center && (item.top + item.height) > center)
+      const selItem = this.itemWithPoses.find(item => item.pos.top < center && (item.pos.top + item.pos.height) > center)
       if (!selItem) { return }
       this.selectedId = selItem.id
     }

@@ -1,22 +1,32 @@
 <template>
   <e-cont :r="r" :s="s" :dur="dur" :ox="0" :oy="0">
-    <svg class="planet-root" :viewBox="`${-size/2} ${-size/2} ${size} ${size}`" :width="size" :height="size" :style="{
-      background: color,
-      left: `${-size/2}px`,
-      top: `${-size/2}px`
-    }" @click="clickPlanetRoot">
-      <g>
-        <!-- <use xlink:href="#PlanetAsset" /> -->
-        <defs>
-          <slot></slot>
-        </defs>
-
+    <svg
+      :viewBox="`${-size/2} ${-size/2} ${size} ${size}`"
+      :width="size"
+      :height="size"
+      :class="{
+        'planet-root': true,
+        round: !liquid
+      }"
+      :style="{
+        left: `${-size/2}px`,
+        top: `${-size/2}px`,
+        animationDuration: `${Math.abs(rdur)}ms`,
+        animationDirection: rdur > 0 ? 'normal' : 'reverse'
+      }"
+      @click="clickPlanetRoot">
+      <defs>
+        <clipPath :id="`clippath-${rndid}`">
+          <mof-circle v-if="liquid" :size="size * 0.95"></mof-circle>
+        </clipPath>
+      </defs>
+      <g :clip-path="liquid ? `url(#clippath-${rndid})` : ''">
+        <rect :x="-size / 2" :y="-size / 2" :width="size" :height="size" :fill="color" />
         <rect v-for="line in lines" :key="line.id"
           :x="line.x" :y="line.y" :width="line.w" :height="line.h"
           :fill="line.fill" :transform="`rotate(${line.r})`" />
 
         <debug-grid v-if="debug" :w="size" :h="size" :size="10" :group="2"></debug-grid>
-
       </g>
     </svg>
   </e-cont>
@@ -25,8 +35,20 @@
 <style scoped>
 .planet-root {
   position: absolute;
+  animation: spin 15s linear infinite;
+}
+.round{
   border-radius: 50%;
 }
+@keyframes spin {
+  0% {transform: rotate(0deg);}
+  100% {transform: rotate(360deg);}
+}
+@keyframes rspin {
+  0% {transform: rotate(0deg);}
+  100% {transform: rotate(-360deg);}
+}
+
 </style>
 
 <script>
@@ -35,19 +57,23 @@ import DebugGrid from './core/DebugGrid'
 import ColorUtil from '@/core/ColorUtil'
 import TL from '@/core/TL'
 import ECont from '@/components/core/ECont'
+import MofCircle from './MofCircle'
 export default {
   name: 'Planet',
-  components: { DebugGrid, ECont },
+  components: { DebugGrid, ECont, MofCircle },
   props: {
     color: { type: String, default: '#38A6BC' },
     size: { type: Number, default: 100 },
+    rdur: { type: Number, default: 15000 },
+    liquid: { type: [Boolean, String], default: false },
     debug: { type: String, default: '' }
   },
   data () {
     return {
       r: 0,
       s: 1,
-      dur: 0
+      dur: 0,
+      rndid: 'Planet-' + Math.random()
     }
   },
   computed: {
