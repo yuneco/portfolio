@@ -2,29 +2,29 @@
   <div :style="{
     width: `${width}px`,
     height: `${height}px`,
-    transform: `translate(${left}px, ${top}px)`,
+    transform: `translate(${left}px, ${top}px) scale(${scale})`,
     transitionDuration: `${animDur}ms`,
     zIndex: `${selected ? 2 : 1}`
   }"
   @click="clickItem"
   :class="{'photo-item-root': true }"
   >
-    <transition name="fade">
-      <div v-if="visible" :class="{ 'item-inner': true, selected: selected }" :style="{
-        backgroundColor: `${basecolor}60`
-      }">
-        <div class="img thumb" :style="{ backgroundImage: `url(${thumbSrc})` }"></div>
-        <div class="img org" v-if="selected || srcLoaded" :style="{ backgroundImage: `url(${src})` }"></div>
-        <div class="title">{{ title }}</div>
-      </div>
-    </transition>
+    <div v-if="visible" :class="{ 'item-inner': true, selected: selected }" :style="{
+      backgroundColor: `${bgColor}`
+    }">
+      <div class="img thumb" :style="{
+        backgroundImage: `url(${thumbSrc})`
+      }"></div>
+      <div class="img org" v-if="selected || srcLoaded" :style="{ backgroundImage: `url(${src})` }"></div>
+      <div class="title">{{ title }}</div>
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .photo-item-root {
   position: absolute;
-  transition: all 0.5s ease-out;
+  transition: transform 0.5s ease-out, width 0.25s 0.5s ease-out, height 0.25s 0.5s ease-out;
   z-index: 0;
   .item-inner {
     position: absolute;
@@ -33,8 +33,10 @@
     width: 100%;
     height: 100%;
     box-sizing: border-box;
-    border: 2px solid rgba(172, 215, 255, 0.2);
-    background-color: rgba(172, 215, 255, 0.084);
+    // border: 1px solid rgba(3, 4, 6, 0.2);
+    background-color: rgba(7, 11, 16, 0.619);
+    box-shadow: 0px 0px 8px -2px rgba(17,38,54,1);
+    overflow: hidden;
     &.selected {
       background-color: rgba(255, 172, 186, 0.53);
     }
@@ -45,7 +47,9 @@
     top: 0;
     width: 100%;
     height: 100%;
-    background-size: cover;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: top center;
     &.thumb {
       z-index: 1
     }
@@ -53,20 +57,24 @@
       z-index: 2;
     }
   }
+  .title {
+    position: absolute;
+    width: 100%;
+    height: 20px;
+    bottom: 4px;
+    left: 0;
+    padding: 5px;
+    font-size: 9pt;
+    color: #ffffffd4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
-.fade-enter-active, .fade-leave-active {
-  transition: all 300ms ease-out;
-}
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0.4;
-  transform: translateY(-80px) scale(0.6);
-}
 </style>
 
 <script>
-
-const TESTSRC = 'http://farm5.static.flickr.com/4498/23741628238_541f4fc1c7.jpg'
+import ColorUtil from '@/core/ColorUtil'
 
 export default {
   name: 'PhotoItem',
@@ -76,9 +84,10 @@ export default {
     src: { type: String, default: '' },
     width: { type: Number, default: 0 },
     height: { type: Number, default: 0 },
+    scale: { type: Number, default: 1 },
     left: { type: Number, default: 0 },
     top: { type: Number, default: 0 },
-    thumbSrc: { type: String, default: TESTSRC },
+    thumbSrc: { type: String, default: '' },
     selected: { type: [Boolean, String], default: false },
     basecolor: { type: String, default: 'transparent' }
   },
@@ -90,6 +99,10 @@ export default {
     }
   },
   computed: {
+    bgColor () {
+      const c = ColorUtil.toColor(this.basecolor || '#000000').darken(0.4).alpha(0.5)
+      return c.string()
+    }
   },
   mounted () {
     this.animDur = 300

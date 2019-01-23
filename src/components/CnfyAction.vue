@@ -70,9 +70,9 @@ export default {
   methods: {
     async stopAction (immd) {
       if (!this.$data.crAction) { return }
-      console.log('WAIT STOP ACTION')
+      // console.log('WAIT STOP ACTION')
       await this.$data.crAction.stop(immd)
-      console.log('SOLVED STOP ACTION')
+      // console.log('SOLVED STOP ACTION')
     },
 
     async waitActionEnd () {

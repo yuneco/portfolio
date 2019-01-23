@@ -6,6 +6,9 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    common: {
+      colors: []
+    },
     gallery: {
       imgMetas: []
     }
@@ -16,6 +19,12 @@ export default new Vuex.Store({
     },
     setGalleryMetas (state, { metas }) {
       state.gallery.imgMetas = [...metas]
+    },
+    setAppColors (state, { colors }) {
+      state.common.colors = []
+      if (colors && colors.length >= 5) {
+        state.common.colors.push(...colors)
+      }
     }
   },
   actions: {

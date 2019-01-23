@@ -44,15 +44,15 @@ export default class TL {
 
   async stop (immd = false) {
     if (!this.isRunning) {
-      console.log(`[${this.name}] SOLVED: NOT RUNNING`)
+      // console.log(`[${this.name}] SOLVED: NOT RUNNING`)
       return Promise.resolve()
     }
     this.reqStop()
     return new Promise(resolve => {
-      console.log(`[${this.name}] WAIT STOP RUNNING`)
+      // console.log(`[${this.name}] WAIT STOP RUNNING`)
       this._onEndHndlers.push(
         () => {
-          console.log(`[${this.name}] _onBreakHndlers FIRED`)
+          // console.log(`[${this.name}] _onBreakHndlers FIRED`)
           resolve()
         })
     })

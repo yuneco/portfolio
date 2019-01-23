@@ -1,26 +1,30 @@
 {
-  "name": "planetvue",
+  "name": "nekobooksweb",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "deploy": "vue-cli-service build; firebase deploy",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "@tweenjs/tween.js": "^17.2.0",
     "chromatism": "^3.0.0",
     "color": "^3.1.0",
+    "easing-functions": "^1.0.1",
     "firebase": "^5.7.3",
     "gsap": "^2.0.2",
     "register-service-worker": "^1.5.2",
     "skmeans": "^0.9.8",
     "svg.js": "^2.7.1",
     "vue": "^2.5.17",
+    "vue-analytics": "^5.16.2",
     "vue-animejs": "^1.0.2",
     "vue-image-upload-resize": "^2.0.3",
     "vue-router": "^3.0.1",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.2.0",

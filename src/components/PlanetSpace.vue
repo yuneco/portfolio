@@ -19,7 +19,7 @@
           <planet  :rdur="-8000" :size="planet2pos.s * 15" color="#99aacc"></planet>
         </r-cont>
 
-        <planet ref="planet2" :rdur="-16000" :size="planet2pos.s * 100" color="#37b" @click="changePlanet('planet2')"></planet>
+        <planet ref="planet2" :rdur="-16000" :size="planet2pos.s * 100" :color="planetColor2" @click="changePlanet('planet2')"></planet>
       </e-cont>
 
       <e-cont class="planet1" :x="planet1pos.x" :y="planet1pos.y">
@@ -27,11 +27,11 @@
           <planet :rdur="3500" :size="planet1pos.s * 10" color="#ddd"></planet>
         </r-cont>
 
-        <planet ref="planet1" :rdur="25000" :size="planet1pos.s * 100" color="#acd" @click="changePlanet('planet1')"></planet>
+        <planet ref="planet1" :rdur="25000" :size="planet1pos.s * 100" :color="planetColor1" @click="changePlanet('planet1')"></planet>
       </e-cont>
 
-      <e-cont class="planet3" :s="planet3pos.s" :x="planet3pos.x" :y="planet3pos.y">
-        <planet ref="planet3" :rdur="10000" color="#f8d899" @click="changePlanet('planet3')"></planet>
+      <e-cont class="planet3" :x="planet3pos.x" :y="planet3pos.y">
+        <planet ref="planet3" :rdur="10000" :size="planet3pos.s * 100" :color="planetColor3" @click="changePlanet('planet3')"></planet>
       </e-cont>
 
       <e-cont class="cnfy-planet" :s="cnfyPlanetPos.s" :x="cnfyPlanetPos.x" :y="cnfyPlanetPos.y" :dur="4500">
@@ -69,7 +69,10 @@ export default {
     h: { type: Number, default: 100 },
     perspective: { type: Number, default: 1000 },
     count: { type: Number, default: 10 },
-    background: { type: String, default: '#369' }
+    background: { type: String, default: '#369' },
+    planetColor1: { type: String, default: '#acd' },
+    planetColor2: { type: String, default: '#99aacc' },
+    planetColor3: { type: String, default: '#f8d899' }
   },
   data () {
     return {

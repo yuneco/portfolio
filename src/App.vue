@@ -26,9 +26,11 @@ div {
 
 <script>
 import AppBackView from '@/AppBack'
+import Time from '@/core/Time'
 export default {
   components: { AppBackView },
-  mounted () {
+  async mounted () {
+    await Time.wait(2000)
     this.$store.dispatch('loadGalleryMetas')
   }
 }

@@ -1,4 +1,12 @@
 module.exports = {
+  css: {
+    loaderOptions: {
+      sass: {
+        data: `@import "@/assets/shared-mixin.scss";`
+      }
+    }
+  },
+
   chainWebpack (config) {
     // Remove existing SVG rule which uses file-loader
     config.module.rules.delete('svg')

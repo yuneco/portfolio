@@ -4,7 +4,9 @@ import Home from './views/Home.vue'
 import TopView from './views/TopView.vue'
 import GalleryView from './views/GalleryView.vue'
 import AppsAndPgView from './views/AppsAndPgView.vue'
+import InfoView from './views/InfoView.vue'
 import ContactView from './views/ContactView.vue'
+import TestView from './views/TestView.vue'
 
 Vue.use(Router)
 
@@ -13,7 +15,7 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '/test',
+      path: '/cnfy',
       name: 'home',
       component: Home
     },
@@ -24,7 +26,12 @@ export default new Router({
     },
     {
       path: '/gallery',
-      name: 'galleryView',
+      name: 'galleryViewRoot',
+      component: GalleryView
+    },
+    {
+      path: '/gallery/:filename',
+      name: 'galleryViewItem',
       component: GalleryView
     },
     {
@@ -38,9 +45,24 @@ export default new Router({
       component: ContactView
     },
     {
+      path: '/info',
+      name: 'infoView',
+      component: InfoView
+    },
+    {
+      path: '/test2',
+      name: 'testView',
+      component: TestView
+    },
+    {
       path: '/adm/upload',
       name: 'AdminUploadImage',
       component: () => import(/* webpackChunkName: "admin-group" */ './admin/views/ImgUploader.vue')
+    },
+    {
+      path: '/adm/patch',
+      name: 'AdminTmpPatch',
+      component: () => import(/* webpackChunkName: "admin-group" */ './admin/views/TmpPatch.vue')
     }
   ]
 })

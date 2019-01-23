@@ -4,6 +4,7 @@ admin.initializeApp()
 const db = admin.firestore()
 db.settings({ timestampsInSnapshots: true })
 
+const contactmail = require('./contactmail')
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 //
@@ -11,6 +12,7 @@ db.settings({ timestampsInSnapshots: true })
 //  response.send("Hello from Firebase!");
 // });
 
+const cors = require('cors')({origin: true});
 const path = require('path')
 const os = require('os')
 const fs = require('fs')
@@ -63,7 +65,7 @@ const saveCanvasToFile = (canvas, outPath) => {
     })
 
     canvas.createJPEGStream({
-      quality: 0.95,
+      quality: 0.75,
       chromaSubsampling: false
     }).pipe(outFs)
 
@@ -71,11 +73,17 @@ const saveCanvasToFile = (canvas, outPath) => {
 }
 
 const saveMetadataToDb = (name, orgWidth, orgHeight, thumbWidth, thumbHeight) => {
+  const d = new Date()
+  const yyyymmdd = d.getFullYear() * 10000
+    + (d.getMonth() + 1) * 100
+    + d.getDate()
+
   return db.collection('imgs').doc(name).set({
     filename: name,
     title: `Image - ${name}`,
     description: '',
     created: Date.now(),
+    order: yyyymmdd,
     colors: {
       main: '',
       colors: []
@@ -93,6 +101,15 @@ const saveMetadataToDb = (name, orgWidth, orgHeight, thumbWidth, thumbHeight) =>
       url: ''
     }
   })
+}
+
+const saveMetadataToStorage = async (filePath) => {
+  const bucket = admin.storage().bucket()
+  const file =  bucket.file(filePath)
+  const metadata = {
+    cacheControl: `public,max-age=300, s-maxage=${3600 * 24 * 30}`
+  }
+  return file.setMetadata(metadata)
 }
 
 // Download file from bucket.
@@ -126,15 +143,64 @@ const generateThumbnail = async (object) => {
   const res = await bucket.upload(tempThumbPath, {
     destination: thumbPath,
     metadata: {
-      contentType: 'image/jpeg'
+      contentType: 'image/jpeg',
+      cacheControl: `public,max-age=${3600 * 24}, s-maxage=${3600 * 24 * 30}`
     }
   })
   await fs.unlinkSync(tempFilePath)
   await fs.unlinkSync(tempThumbPath)
   await saveMetadataToDb(fileName, imgFull.width, imgFull.height, canvas.width, canvas.height)
+  await saveMetadataToStorage(filePath)
   console.log('ThumbCreate Finished')
 
   return
 }
 
+const deleteRelatedImg = async (snap, context) => {
+  const data = snap.data()
+  const thumbPath = data.thumb.path
+  const orgPath = data.org.path
+
+  const bucket = admin.storage().bucket()
+  await bucket.file(thumbPath).delete()
+  await bucket.file(orgPath).delete()
+  console.log(`Deleted record: ${data.filename}`)
+}
+
+const sendContactmail = async (req, res) => {
+  cors(req, res, async () => {
+    const params = {
+      subject: req.body['subject'],
+      name: req.body['name'],
+      company: req.body['company'],
+      message: req.body['message'],
+      mail: req.body['mail']
+    }
+    if (!params.message) {
+      console.warn(params, req)
+      res.status(404).end('404 Not Found')
+      return
+    }
+
+    const mailSubject = `[nekobooksweb]お問い合わせ：${params.subject || 'N/A'}`
+    const mailBody = `Title: ${params.subject || 'N/A'}
+  Name: ${params.name || 'N/A'}
+  Company: ${params.company || 'N/A'}
+  Mail: ${params.mail || 'N/A'}
+  Message: ${params.message}
+  `
+
+    try {
+      await contactmail(mailSubject, mailBody, params.mail)
+    } catch (err) {
+      console.error(err)
+      res.status(404).end('404 Not Found')
+    }
+    console.log('mail sent')
+    res.status(200).end('ok')
+  })
+}
+
 exports.generateThumbnail = functions.storage.object().onFinalize(generateThumbnail)
+exports.deleteRelatedImg = functions.firestore.document('imgs/{docs}').onDelete(deleteRelatedImg)
+exports.contactmail = functions.runWith({timeoutSeconds: 20, memory: '256MB'}).https.onRequest(sendContactmail)

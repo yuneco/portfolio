@@ -13,6 +13,9 @@
       <planet-space v-if="true" :w="stageWidth" :h="stageHeight"
         :perspective="~~perspective"
         :background="spaceBg"
+        :planet-color1="planetColors[0]"
+        :planet-color2="planetColors[1]"
+        :planet-color3="planetColors[2]"
         :style="{
           left: `${spaceX}px`,
           top:  `${spaceY}px`
@@ -20,14 +23,14 @@
       ></planet-space>
     </div>
 
-    <div class="page-content" v-show="!this.isTopPage">
+    <div class="page-content" ref="page" v-show="!this.isTopPage">
       <router-view/>
     </div>
 
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .app-back-view {
   background: #0c243c;
   position: absolute;
@@ -36,6 +39,11 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  &.visible {
+    opacity: 1;
+  }
 }
 .stage {
   border: 1px solid gray;
@@ -67,7 +75,11 @@
   left: 0px;
   top: 40px;
   color: white;
-  overflow: scroll;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 </style>
 
@@ -79,10 +91,10 @@ import MenuBox from '@/components/MenuBox'
 
 const MENUDEF = [
   { text: 'Top', path: '/', showOnTop: false },
-  { text: 'Gallery', path: '/gallery', showOnTop: true },
+  { text: 'Illust', path: '/gallery', showOnTop: true },
   { text: 'Apps & PG', path: '/apps', showOnTop: true },
-  { text: 'Contact', path: '/contact', showOnTop: true },
-  { text: 'Adm', path: '/adm/upload', showOnTop: true }
+  { text: 'Info', path: '/info', showOnTop: true },
+  { text: 'Contact', path: '/contact', showOnTop: true }
 ]
 
 export default {
@@ -99,8 +111,14 @@ export default {
     }
   },
   computed: {
+    appColors () {
+      return [...this.$store.state.common.colors, '#006987', '#020751', '#acd', '#99aacc', '#f8d899']
+    },
     spaceBg () {
-      return new Gradient(['#006987', '#020751']).toString()
+      return new Gradient([this.appColors[0], this.appColors[1]]).toString()
+    },
+    planetColors () {
+      return [this.appColors[2], this.appColors[3], this.appColors[4]]
     },
     currentMenuItem () {
       return MENUDEF.find(item => item.path === this.$route.path)
@@ -119,9 +137,22 @@ export default {
       return !this.isTopPage
     }
   },
-  mounted () {
+  async mounted () {
     this.adjustStageSize()
     window.addEventListener('resize', this.adjustStageSize)
+    let lastTouch = Date.now()
+    this.$el.addEventListener('touchend', event => {
+      if (Date.now() - lastTouch <= 500) {
+        event.preventDefault()
+      }
+      lastTouch = Date.now()
+    }, false)
+    this.$el.addEventListener('touchstart', event => {
+      if (event.touches.length > 1) {
+        event.preventDefault()
+      }
+    }, false)
+    this.$el.classList.add('visible')
   },
   destroyed () {
     window.removeEventListener('resize', this.adjustStageSize)
@@ -139,15 +170,11 @@ export default {
       this.stageWidth = stage.offsetWidth
       this.stageHeight = stage.offsetHeight
     },
-    menuSelected (item) {
-      const path = ({
-        'Top': '/',
-        'Gallery': '/gallery',
-        'Apps & PG': '/apps',
-        'Contact': '/contact',
-        'Adm': '/adm/upload'
-      })[item] || ''
+    menuSelected (sel) {
+      const item = MENUDEF.find(mitem => mitem.text === sel)
+      const path = item ? item.path : '/'
       this.$router.push(path)
+      this.$refs.page.scrollTo(0, 0)
     }
   }
 }

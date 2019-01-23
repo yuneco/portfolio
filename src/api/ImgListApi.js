@@ -12,11 +12,14 @@ class ImgListApi extends ApiBase {
    * @return {Array<ImgMeta>} ImgMetadata array
    */
   async loadImgMetaDataList () {
-    const snap = await this.db.collection('imgs').get()
+    const snap = await this.db.collection('imgs').orderBy('filename', 'desc').get()
     const docs = []
     snap.forEach(doc => {
       docs.push(new ImgMeta(doc.data()))
     })
+    const urls = docs.map(doc => doc.thumb.url)
+    this.preloadImgs(urls)
+
     return docs
   }
 
@@ -39,6 +42,30 @@ class ImgListApi extends ApiBase {
         })
       })
     }
+  }
+
+  async preloadImgs (urls) {
+    for (let url of urls) {
+      await this.preloadImg(url, false)
+    }
+  }
+
+  async preloadImg (src, errOnFailed = false) {
+    const loader = new Promise((resolve, reject) => {
+      const img = new Image()
+      img.onload = () => {
+        resolve(img)
+      }
+      img.onerror = (err) => {
+        if (errOnFailed) {
+          reject(err)
+        } else {
+          resolve(img)
+        }
+      }
+      img.src = src
+    })
+    await loader
   }
 }
 

@@ -1,0 +1,7 @@
+$breakpoint-mobile: 420px;
+
+@mixin sp-screen($break-point: $breakpoint-mobile) {
+  @media screen and (max-width: $break-point) {
+    @content;
+  }
+}

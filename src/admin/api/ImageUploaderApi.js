@@ -70,6 +70,16 @@ class ImageUploaderApi extends ApiBase {
     const ref = this._createPhotoRef(dir, name)
     return ref.delete()
   }
+
+  async setCacheMeta (path) {
+    const ref = this.storage.ref().child(path)
+    const metaBefore = await ref.getMetadata()
+    ref.updateMetadata({
+      cacheControl: `public,max-age=${3600 * 24},s-maxage=${3600 * 24 * 30}`
+    })
+    const metaAfter = await ref.getMetadata()
+    console.log(path, metaBefore, metaAfter)
+  }
 }
 
 export default ImageUploaderApi

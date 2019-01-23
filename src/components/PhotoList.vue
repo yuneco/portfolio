@@ -3,25 +3,40 @@
     <div class="scroller" v-if="width > 0" :style="{
       height: `${totalListHeight}px`
     }">
-      <div class="item-box" v-for="item in itemWithPoses" :key="item.id">
-        <photo-item  ref="itemRef"
-          :title="item.meta.title"
-          :src="item.meta.org.url"
-          :thumbSrc="item.meta.thumb.url"
-          :basecolor="item.meta.colors.main"
-          :left="item.pos.left"
-          :top="item.pos.top"
-          :width="item.pos.width"
-          :height="item.pos.height"
-          :selected="item.id === selectedId"
-          @click="clickItem(item)"
-          ></photo-item>
-      </div>
+      <transition-group appear name="list" tag="div">
+        <div class="item-box" v-for="(item, index) in itemWithPoses" :key="item.id"
+          :style="{
+            transitionDelay: `${index * 150}ms`
+          }"
+        >
+          <photo-item  ref="itemRef"
+            :title="item.meta.title"
+            :src="item.meta.org.url"
+            :thumbSrc="item.meta.thumb.url"
+            :basecolor="item.meta.colors.main"
+            :left="item.pos.left"
+            :top="item.pos.top"
+            :width="item.pos.width"
+            :height="item.pos.height"
+            :selected="item.id === selectedId"
+            @click="clickItem(item)"
+            ></photo-item>
+        </div>
+      </transition-group>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
+.list-enter-active, .list-leave-active {
+  transition: all 900ms ease-out;
+  transition-delay: 0;
+}
+.list-enter, .list-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
 .list-root {
   position: absolute;
   // background: #99ffff19;
@@ -29,6 +44,10 @@
   width: 100%;
   height: 100%;
   overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 .scroller{
   position: relative;
@@ -45,6 +64,10 @@
 <script>
 import PhotoItem from './PhotoItem'
 import Time from '@/core/Time'
+import Scroller from '@/core/Scroller'
+
+const TITLEBOX_HEIGHT = 20
+
 export default {
   name: 'PhotoList',
   components: { PhotoItem },
@@ -56,7 +79,8 @@ export default {
   data () {
     return {
       selectedId: null,
-      width: 0
+      width: 0,
+      scroller: 0
     }
   },
   computed: {
@@ -81,10 +105,10 @@ export default {
       if (!selMeta) { return null }
       const parent = this.$el
       const pw = parent.offsetWidth
-      const ph = parent.offsetHeight
-      const r = Math.min(1, Math.min(pw / selMeta.org.width, ph / selMeta.org.height))
+      const ph = parent.offsetHeight - 50
+      const r = Math.min(1, Math.min(pw / selMeta.org.width, ph / (selMeta.org.height + TITLEBOX_HEIGHT)))
       const width = selMeta.org.width * r
-      const height = selMeta.org.height * r
+      const height = selMeta.org.height * r + TITLEBOX_HEIGHT
       const left = (pw - width) / 2
       const top = (ph - height) / 2 + parent.scrollTop
       return { left, top, width, height }
@@ -102,7 +126,7 @@ export default {
         const left = targetColIndex * (marginX + this.colWidth) + outerMarginX
         const top = accHeightOfCols[targetColIndex] + marginY
         const width = this.colWidth
-        const height = width / meta.org.width * meta.org.height
+        const height = width / meta.org.width * meta.org.height + TITLEBOX_HEIGHT
         accHeightOfCols[targetColIndex] += height + marginY
         const itemPos = { left, top, width, height }
         const isUseSelPos = isSelected && !this.isSerialView
@@ -114,10 +138,10 @@ export default {
     },
     selItemPos () {
       if (!this.isSelected) { return null }
-      return this.itemWithPoses.find(item => item.id === this.selectedId)
+      return this.itemById(this.selectedId)
     },
     totalListHeight () {
-      return Math.max(...this.itemWithPoses.map(item => item.pos.top + item.pos.height))
+      return Math.max(...this.itemWithPoses.map(item => item.pos.top + item.pos.height)) + this.minMargin
     }
   },
   mounted () {
@@ -133,25 +157,32 @@ export default {
       lastScrollValue = this.$el.scrollTop
       lastScrollTime = Date.now()
     })
-    this.updateWidth()
+    this.updateWidth(true)
+    this.scroller = new Scroller(this.$el, 500)
   },
   destroyed () {
     window.removeEventListener('resize', this.updateWidth)
   },
+  watch: {
+    selectedId (val) {
+      const item = this.itemById(val)
+      this.$emit('changed', val, item)
+    }
+  },
   methods: {
-    async updateWidth () {
+    async updateWidth (immediate) {
       const beforeWidth = this.$el.offsetWidth
-      await Time.wait(500)
+      if (!immediate) { await Time.wait(500) }
       if (beforeWidth !== this.$el.offsetWidth) { return }
       this.width = this.$el.offsetWidth
     },
     async scrollToItem (id) {
-      const item = this.itemWithPoses.find(item => item.id === id)
+      const item = this.itemById(id)
       if (!item) { return }
       await Time.wait(0) // wait apply .scroller height
       const offset = (this.$el.offsetHeight - item.pos.height) / 2
       const top = Math.max(0, item.pos.top - offset)
-      this.$el.scrollTop = Math.max(0, top)
+      this.scroller.to(top)
     },
     clickItem (item) {
       const id = item.id
@@ -171,6 +202,16 @@ export default {
       const selItem = this.itemWithPoses.find(item => item.pos.top < center && (item.pos.top + item.pos.height) > center)
       if (!selItem) { return }
       this.selectedId = selItem.id
+    },
+    itemById (id) {
+      return this.itemWithPoses.find(item => item.id === id)
+    },
+    async selectItemWithId (id) {
+      const item = this.itemById(id)
+      this.selectedId = item ? item.id : null
+      if (item) {
+        this.scrollToItem(item.id)
+      }
     }
   }
 }

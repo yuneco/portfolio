@@ -11,6 +11,7 @@ export default class ImgMeta {
       title: null,
       description: null,
       filename: null,
+      order: 0,
       org: {
         width: 0,
         height: 0,
@@ -39,6 +40,7 @@ export default class ImgMeta {
   get title () { return this._data.title }
   get description () { return this._data.description }
   get filename () { return this._data.filename }
+  get order () { return this._data.order }
   get org () { return this._data.org }
   get thumb () { return this._data.thumb }
   get colors () { return this._data.colors }
@@ -46,6 +48,7 @@ export default class ImgMeta {
   set title (v) { this._data.title = v }
   set description (v) { this._data.description = v }
   set filename (v) { this._data.filename = v }
+  set order (v) { this._data.order = v || 0 }
   set org (v) {
     v = v || {}
     this._data.org.width = v.width || 0

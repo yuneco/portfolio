@@ -3013,6 +3013,11 @@ duplexify@^3.4.2, duplexify@^3.6.0:
     readable-stream "^2.0.0"
     stream-shift "^1.0.0"
 
+easing-functions@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/easing-functions/-/easing-functions-1.0.1.tgz#66eaadafb4593212b700e867553d876009848ef4"
+  integrity sha512-5eHZ+InobokmzyYTs3BtL+bNoKVQiDF1iQoh1FQ0pWNAhhgqA2/o9z4LX/G6fq0jWFu16LdAxidxQi/fnRqfdw==
+
 easy-stack@^1.0.0:
   version "1.0.0"
   resolved "http://registry.npm.taobao.org/easy-stack/download/easy-stack-1.0.0.tgz#12c91b3085a37f0baa336e9486eac4bf94e3e788"
@@ -8552,6 +8557,11 @@ vm-browserify@0.0.4:
   dependencies:
     indexof "0.0.1"
 
+vue-analytics@^5.16.2:
+  version "5.16.2"
+  resolved "https://registry.yarnpkg.com/vue-analytics/-/vue-analytics-5.16.2.tgz#37724aeec71bb830b1cf2d52a969cf190ef120c1"
+  integrity sha512-5JKGnVF33VHlXFREzht9z3Z11N4IA8vXNnpvYeAf72rEUyAuuU9Q9kX34bULW2CxMrahr8m06IB8+91GX0Ruag==
+
 vue-animejs@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/vue-animejs/-/vue-animejs-1.0.2.tgz#38c39c8fa5864e18b9020c2d36c290b4c67606a5"
@@ -8808,7 +8818,7 @@ whatwg-fetch@2.0.4:
   resolved "https://registry.yarnpkg.com/whatwg-fetch/-/whatwg-fetch-2.0.4.tgz#dde6a5df315f9d39991aa17621853d720b85566f"
   integrity sha512-dcQ1GWpOD/eEQ97k66aiEVpNnapVj90/+R+SXTPYGHpYBBypfKJEQjLrvMZ7YXbKm21gXd4NcuxUTjiv1YtLng==
 
-whatwg-fetch@>=0.10.0:
+whatwg-fetch@>=0.10.0, whatwg-fetch@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/whatwg-fetch/-/whatwg-fetch-3.0.0.tgz#fc804e458cc460009b1a2b966bc8817d2578aefb"
   integrity sha512-9GSJUgz1D4MfyKU7KRqwOjXCXTqWdFNvEr7eUBYchQiVc744mqK/MzXPNR2WsPkmkOa4ywfg8C2n8h+13Bey1Q==
