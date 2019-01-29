@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import DebugHome from './views/DebugHome.vue'
-import TopView from './views/TopView.vue'
-import GalleryView from './views/GalleryView.vue'
-import AppsAndPgView from './views/AppsAndPgView.vue'
-import InfoView from './views/InfoView.vue'
-import ContactView from './views/ContactView.vue'
-import TestView from './views/TestView.vue'
+import DebugHome from './pages/DebugHome.vue'
+import TopView from './pages/TopView.vue'
+import GalleryView from './pages/GalleryView.vue'
+import AppsAndPgView from './pages/AppsAndPgView.vue'
+import InfoView from './pages/InfoView.vue'
+import ContactView from './pages/ContactView.vue'
+import TestView from './pages/TestView.vue'
 
 Vue.use(Router)
 
@@ -57,12 +57,12 @@ export default new Router({
     {
       path: '/adm/upload',
       name: 'AdminUploadImage',
-      component: () => import(/* webpackChunkName: "admin-group" */ './admin/views/ImgUploader.vue')
+      component: () => import(/* webpackChunkName: "admin-group" */ './admin/pages/ImgUploader.vue')
     },
     {
       path: '/adm/patch',
       name: 'AdminTmpPatch',
-      component: () => import(/* webpackChunkName: "admin-group" */ './admin/views/TmpPatch.vue')
+      component: () => import(/* webpackChunkName: "admin-group" */ './admin/pages/TmpPatch.vue')
     }
   ]
 })
