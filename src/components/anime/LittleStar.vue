@@ -16,7 +16,7 @@
 // import MU from '@/core/MathUtil'
 // import ColorUtil from '@/core/ColorUtil'
 import TL from '@/core/TL'
-import ECont from '@/components/core/ECont'
+import ECont from '@/components/anime/core/ECont'
 export default {
   name: 'LittleStar',
   components: { ECont },

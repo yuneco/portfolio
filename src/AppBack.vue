@@ -84,7 +84,7 @@
 </style>
 
 <script>
-import PlanetSpace from '@/components/PlanetSpace'
+import PlanetSpace from '@/components/anime/PlanetSpace'
 import Gradient from '@/core/Gradient'
 import Time from '@/core/Time'
 import MenuBox from '@/components/MenuBox'

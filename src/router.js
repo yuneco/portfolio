@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
+import DebugHome from './views/DebugHome.vue'
 import TopView from './views/TopView.vue'
 import GalleryView from './views/GalleryView.vue'
 import AppsAndPgView from './views/AppsAndPgView.vue'
@@ -16,8 +16,8 @@ export default new Router({
   routes: [
     {
       path: '/cnfy',
-      name: 'home',
-      component: Home
+      name: 'debug-home',
+      component: DebugHome
     },
     {
       path: '/',

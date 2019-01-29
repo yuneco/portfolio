@@ -51,12 +51,11 @@
 </style>
 
 <script>
-import Planet from './Planet'
-import BgStars from '@/components/BgStars'
-import ECont from '@/components/core/ECont'
-import RCont from '@/components/core/RCont'
-import CnfyAction from '@/components/CnfyAction'
-// import MofCloud from '@/components/MofCloud'
+import Planet from '@/components/anime/Planet'
+import BgStars from '@/components/anime/BgStars'
+import ECont from '@/components/anime/core/ECont'
+import RCont from '@/components/anime/core/RCont'
+import CnfyAction from '@/components/anime/CnfyAction'
 import Time from '@/core/Time'
 
 const DEFAULT_PLANET_SIZE = 100

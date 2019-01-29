@@ -1,9 +1,6 @@
 <template>
   <div class="home">
     <div class="controls">
-      <div class="menu">
-        <menu-box></menu-box>
-      </div>
 
       <h2>Posing</h2>
       <label>Nod: <input type="range" min="-30" max="30" v-model="headangle"> {{headangle}}</label>
@@ -37,22 +34,7 @@
       <button @click="cnfyDoAction('stand')">Reset</button>
       <br />
       <label>Scale: <input type="range" min="30" max="100" v-model="actionScale"> {{actionScale}}</label>
-
     </div>
-
-    <!-- <svg-stage>
-      <planet :items="planetItems">
-        <g id="myPlant">
-          <swing-plant
-            :angle="~~angle"
-            :length="~~length"
-            :rotate="0"
-            :x="0"
-            :y="0"
-          ></swing-plant>
-        </g>
-      </planet>
-    </svg-stage> -->
 
     <div class="stage2">
 
@@ -115,17 +97,13 @@ label {
 }</style>
 
 <script>
-// import SvgStage from '@/components/SvgStage'
-// import SwingPlant from '@/components/SwingPlant'
-// import Planet from '@/components/Planet'
-import ECont from '@/components/core/ECont'
-import Cnfy from '@/components/Cnfy'
-import MenuBox from '@/components/MenuBox'
-import CnfyAction from '@/components/CnfyAction'
+import ECont from '@/components/anime/core/ECont'
+import Cnfy from '@/components/anime/Cnfy'
+import CnfyAction from '@/components/anime/CnfyAction'
 
 export default {
-  name: 'home',
-  components: { ECont, Cnfy, CnfyAction, MenuBox },
+  name: 'debugHome',
+  components: { ECont, Cnfy, CnfyAction },
   data () {
     return {
       headangle: 0,

@@ -19,8 +19,8 @@
 </style>
 
 <script>
-import ECont from '@/components/core/ECont'
-import LittleStar from '@/components/LittleStar'
+import ECont from '@/components/anime/core/ECont'
+import LittleStar from '@/components/anime/LittleStar'
 import ColorUtil from '@/core/ColorUtil'
 export default {
   name: 'BgStars',

@@ -56,7 +56,7 @@
 import DebugGrid from './core/DebugGrid'
 import ColorUtil from '@/core/ColorUtil'
 import TL from '@/core/TL'
-import ECont from '@/components/core/ECont'
+import ECont from '@/components/anime/core/ECont'
 import MofCircle from './MofCircle'
 export default {
   name: 'Planet',

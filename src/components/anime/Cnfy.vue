@@ -152,7 +152,7 @@
 </style>
 
 <script>
-import ECont from '@/components/core/ECont'
+import ECont from '@/components/anime/core/ECont'
 import ElmRb1 from '@/svgcomps/CnfySide/Rb1.svg'
 import ElmRb2 from '@/svgcomps/CnfySide/Rb2.svg'
 import ElmAm from '@/svgcomps/CnfySide/Am.svg'
