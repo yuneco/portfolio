@@ -2,6 +2,7 @@
 node_modules
 /dist
 .private-env
+/work.private
 
 # local env files
 .env.local
