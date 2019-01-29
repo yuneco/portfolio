@@ -153,16 +153,16 @@
 
 <script>
 import ECont from '@/components/anime/core/ECont'
-import ElmRb1 from '@/svgcomps/CnfySide/Rb1.svg'
-import ElmRb2 from '@/svgcomps/CnfySide/Rb2.svg'
-import ElmAm from '@/svgcomps/CnfySide/Am.svg'
-import ElmHd from '@/svgcomps/CnfySide/Hd.svg'
-import ElmBdTp from '@/svgcomps/CnfySide/BdTp.svg'
-import ElmHrFr from '@/svgcomps/CnfySide/HrFr.svg'
-import ElmHrBk from '@/svgcomps/CnfySide/HrBk.svg'
-import ElmSk from '@/svgcomps/CnfySide/Sk.svg'
-import ElmLgFr from '@/svgcomps/CnfySide/LgFr.svg'
-import ElmLgBk from '@/svgcomps/CnfySide/LgBk.svg'
+import ElmRb1 from '@/assets/svgcomps/CnfySide/Rb1.svg'
+import ElmRb2 from '@/assets/svgcomps/CnfySide/Rb2.svg'
+import ElmAm from '@/assets/svgcomps/CnfySide/Am.svg'
+import ElmHd from '@/assets/svgcomps/CnfySide/Hd.svg'
+import ElmBdTp from '@/assets/svgcomps/CnfySide/BdTp.svg'
+import ElmHrFr from '@/assets/svgcomps/CnfySide/HrFr.svg'
+import ElmHrBk from '@/assets/svgcomps/CnfySide/HrBk.svg'
+import ElmSk from '@/assets/svgcomps/CnfySide/Sk.svg'
+import ElmLgFr from '@/assets/svgcomps/CnfySide/LgFr.svg'
+import ElmLgBk from '@/assets/svgcomps/CnfySide/LgBk.svg'
 export default {
   components: { ECont, ElmRb1, ElmRb2, ElmAm, ElmHd, ElmBdTp, ElmHrFr, ElmHrBk, ElmSk, ElmLgFr, ElmLgBk },
   props: {
