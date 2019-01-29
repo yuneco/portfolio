@@ -1,11 +1,11 @@
 <template>
-  <div class="app-back-view">
+  <div class="app-content-view">
 
     <div class="menu">
       <menu-box ref="menu" :items="menuItems"
       @selected="menuSelected"
       :sel="currentMenuItem ? currentMenuItem.text : ''"
-      :mode="isTopPage ? 'stack' : 'line'"
+      :mode="currentMenuItem ? currentMenuItem.menuMode : 'line'"
     ></menu-box>
     </div>
 
@@ -31,7 +31,7 @@
 </template>
 
 <style lang="scss" scoped>
-.app-back-view {
+.app-content-view {
   background: #0c243c;
   position: absolute;
   top: 0;
@@ -55,10 +55,10 @@
   filter: blur(0px) brightness(100%);
   transform: scale(1.0);
   transition: all 1.5s;
-}
-.stage.blur {
-  filter: blur(8px) brightness(90%);
-  transform: scale(1.25);
+  &.blur {
+    filter: blur(8px) brightness(90%);
+    transform: scale(1.25);
+  }
 }
 .menu {
   position: absolute;
@@ -90,15 +90,15 @@ import Time from '@/core/Time'
 import MenuBox from '@/components/MenuBox'
 
 const MENUDEF = [
-  { text: 'Top', path: '/', showOnTop: false },
-  { text: 'Illust', path: '/gallery', showOnTop: true },
-  { text: 'Apps & PG', path: '/apps', showOnTop: true },
-  { text: 'Info', path: '/info', showOnTop: true },
-  { text: 'Contact', path: '/contact', showOnTop: true }
+  { text: 'Top', path: '/', showOnTop: false, menuMode: 'stack' },
+  { text: 'Illust', path: '/gallery', showOnTop: true, menuMode: 'line' },
+  { text: 'Apps & PG', path: '/apps', showOnTop: true, menuMode: 'line' },
+  { text: 'Info', path: '/info', showOnTop: true, menuMode: 'line' },
+  { text: 'Contact', path: '/contact', showOnTop: true, menuMode: 'line' }
 ]
 
 export default {
-  name: 'AppBackView',
+  name: 'AppContentView',
   components: { PlanetSpace, MenuBox },
   data () {
     return {

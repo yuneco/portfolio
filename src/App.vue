@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <app-back-view></app-back-view>
+    <app-content-view></app-content-view>
   </div>
 </template>
 
@@ -25,10 +25,10 @@ div {
 </style>
 
 <script>
-import AppBackView from '@/AppBack'
+import AppContentView from '@/AppContent'
 import Time from '@/core/Time'
 export default {
-  components: { AppBackView },
+  components: { AppContentView },
   async mounted () {
     await Time.wait(2000)
     this.$store.dispatch('loadGalleryMetas')
