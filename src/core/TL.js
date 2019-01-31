@@ -1,11 +1,20 @@
 import Time from './Time'
 
+// Simple timeline class.
+// This timeline is NOT supports interpolation between key frames.
+
 const TYPE_TO = 'to'
 const TYPE_BY = 'by'
 const TYPE_DO = 'do'
 const TYPE_WAIT = 'wait'
 
 export default class TL {
+  /**
+   * Create nwe timeline.
+   * @constructor
+   * @param {Object} target Target object to change its props in this timeline.
+   * @param {? String} name Any name for debugging.
+   */
   constructor (target, name) {
     this._target = target
     this._name = name || 'TL-' + ~~(Math.random() * 1000000)
@@ -19,48 +28,61 @@ export default class TL {
     this._canceled = false // DO NOT REST
     this._runCount = 0 // DO NOT REST
   }
-  to (to) {
-    this._kfs.push({ type: TYPE_TO, to })
-    return this
-  }
-  by (by) {
-    this._kfs.push({ type: TYPE_BY, by })
-    return this
-  }
-  do (f) {
-    this._kfs.push({ type: TYPE_DO, do: f })
-    return this
-  }
+
+  // Construct Timeline //
+
+  /**
+   * move the cursor forword.
+   * @param {number} ms
+   */
   wait (ms) {
     this._kfs.push({ type: TYPE_WAIT, ms })
     return this
   }
-
-  reqStop (immd = false) {
-    if (!this.isRunning) { return }
-    this._breakAtKf = !!immd
-    this._breakAtEnd = true
+  /**
+   * change props of the target using assigned objct's props.
+   * @param {Object} to
+   */
+  to (to) {
+    this._kfs.push({ type: TYPE_TO, to })
+    return this
+  }
+  /**
+   * add assigned objct's props value to the target's props.
+   * @param {Object} by
+   */
+  by (by) {
+    this._kfs.push({ type: TYPE_BY, by })
+    return this
+  }
+  /**
+   * execute any callback function.
+   * @param {Function} f
+   */
+  do (f) {
+    this._kfs.push({ type: TYPE_DO, do: f })
+    return this
   }
 
+  // Play & Stop Timeline //
+
+  /**
+   * request to stop.
+   * @param {bool} immd If true, timeline will stop at next key frame. Otherwise run until end of timeline (and stop before next loop).
+   * @return {Promise} resolve after timeline is stopped.
+   */
   async stop (immd = false) {
     if (!this.isRunning) {
-      // console.log(`[${this.name}] SOLVED: NOT RUNNING`)
       return Promise.resolve()
     }
-    this.reqStop()
+    this._breakAtKf = !!immd
+    this._breakAtEnd = true
     return new Promise(resolve => {
-      // console.log(`[${this.name}] WAIT STOP RUNNING`)
       this._onEndHndlers.push(
         () => {
-          // console.log(`[${this.name}] _onBreakHndlers FIRED`)
           resolve()
         })
     })
-  }
-
-  cancel () {
-    if (this.isRunning) { throw new Error(`[this.name] TL is running`) }
-    this._canceled = true
   }
 
   async onend (waitIfNotRunning = false) {

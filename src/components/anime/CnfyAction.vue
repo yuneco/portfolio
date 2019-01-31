@@ -88,7 +88,7 @@ export default {
       if (!crAction) {
         return
       }
-      crAction.reqStop(this.isBreakActionImmediate)
+      crAction.stop(this.isBreakActionImmediate)
       if (crAction.isBeforeRun || crAction.isRunning) {
         // console.log(`[${tl.name}] wait for end of [${crAction.name}]`)
         await crAction.onend(true)
