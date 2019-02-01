@@ -7,6 +7,7 @@ db.settings({ timestampsInSnapshots: true })
 const generateThumbnail = require('./src/generateThumbnail')
 const deleteRelatedImg = require('./src/deleteRelatedImg')
 const sendContactmail = require('./src/sendContactmail')
+const galleryPageOgp = require('./src/galleryPageOgp')
 
 // create thumbnail and db record when img uploaded
 exports.generateThumbnail = functions.storage.object()
@@ -24,3 +25,11 @@ exports.contactmail = functions
   .runWith({timeoutSeconds: 20, memory: '256MB'})
   .https
   .onRequest(sendContactmail)
+
+// gallery page OGP
+exports.galleryPageOgp = functions
+  .runWith({timeoutSeconds: 20, memory: '256MB'})
+  .https
+  .onRequest((req, res) => {
+    galleryPageOgp(db, req, res)
+  })

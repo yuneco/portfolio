@@ -3,6 +3,10 @@
     "public": "dist",
     "rewrites": [
       {
+        "source": "/gallery/*",
+        "function": "galleryPageOgp"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }

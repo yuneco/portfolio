@@ -15,6 +15,11 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     {
+      // OGP Redirect //
+      path: '/_gallery/:filename',
+      redirect: '/gallery/:filename'
+    },
+    {
       path: '/cnfy',
       name: 'debug-home',
       component: DebugHome
