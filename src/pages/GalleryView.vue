@@ -64,14 +64,19 @@ export default {
       }
     },
     async imgMetas (val) {
+      // this watch will be fired only once when DB documents are loaded.
       if (this.initialSelId) {
+        // if the item to select is specified (see this.mounted), select that after item list is constructed.
         await Time.wait(1)
-        this.$refs.list.selectItemWithId(this.initialSelId)
+        // select item without smooth-scrolling to avoid animation delay in page loading phase
+        this.$refs.list.selectItemWithId(this.initialSelId, false)
         this.initialSelId = null
       }
     }
   },
   mounted () {
+    // keep gallery item specified in url onto local data object
+    // NOTE: gallery items metadata (=imgMetas) may not be loaded yet.
     this.initialSelId = this.$route.params.filename || null
   },
   methods: {

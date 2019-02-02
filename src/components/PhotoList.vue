@@ -176,13 +176,17 @@ export default {
       if (beforeWidth !== this.$el.offsetWidth) { return }
       this.width = this.$el.offsetWidth
     },
-    async scrollToItem (id) {
+    async scrollToItem (id, enableSmooth = true) {
       const item = this.itemById(id)
       if (!item) { return }
       await Time.wait(0) // wait apply .scroller height
       const offset = (this.$el.offsetHeight - item.pos.height) / 2
       const top = Math.max(0, item.pos.top - offset)
-      this.scroller.to(top)
+      if (enableSmooth) {
+        this.scroller.to(top)
+      } else {
+        this.$el.scrollTop = top
+      }
     },
     clickItem (item) {
       const id = item.id
@@ -206,11 +210,11 @@ export default {
     itemById (id) {
       return this.itemWithPoses.find(item => item.id === id)
     },
-    async selectItemWithId (id) {
+    async selectItemWithId (id, enableSmoothScroll = true) {
       const item = this.itemById(id)
       this.selectedId = item ? item.id : null
       if (item) {
-        this.scrollToItem(item.id)
+        this.scrollToItem(item.id, enableSmoothScroll)
       }
     }
   }
