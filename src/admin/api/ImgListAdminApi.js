@@ -1,5 +1,4 @@
 import ImgListApi from '../../api/ImgListApi'
-// import ImgMeta from '../../model/ImgMeta'
 
 export default class ImgListAdminApi extends ImgListApi {
   /**

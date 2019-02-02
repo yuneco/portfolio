@@ -1,5 +1,5 @@
 import ApiBase from '../../api/ApiBase'
-import firebase from '../../api/firebase'
+import firebase from './firebase'
 
 class AdminAuth extends ApiBase {
   constructor () {

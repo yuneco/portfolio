@@ -1,4 +1,4 @@
-import firebase from '../../api/firebase'
+import firebase from './firebase'
 import ApiBase from '../../api/ApiBase'
 
 const PUBLIC_IMG_DIR = '/public/imgs'

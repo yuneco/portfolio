@@ -1,3 +1,5 @@
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+
 module.exports = {
   css: {
     loaderOptions: {
@@ -19,5 +21,12 @@ module.exports = {
       .end()
       .use('svg-to-vue-component')
       .loader('svg-to-vue-component/loader')
+
+    config
+      .plugin('webpack-bundle-analyzer')
+      .use(BundleAnalyzerPlugin)
+      .init(Plugin => new Plugin({
+        openAnalyzer: false
+      }))
   }
 }

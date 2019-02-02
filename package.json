@@ -39,6 +39,7 @@
     "node-sass": "^4.9.0",
     "sass-loader": "^7.0.1",
     "svg-to-vue-component": "^0.2.6",
+    "vue-cli-plugin-webpack-bundle-analyzer": "^1.2.0",
     "vue-template-compiler": "^2.5.17"
   }
 }
