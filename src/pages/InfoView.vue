@@ -46,7 +46,7 @@
             <li>ServerSide: Node.js / Java / Cloud(Firebase, AWS)</li>
             <li>Detabase: Firebase(RealtimeDB, CloudFirestore) / MongoDB / PostgreSQL</li>
             <li>Desktop: Xojo</li>
-            <li>資格：基本情報 / ソフトアエア開発技術者 / ネットワークスペシャリスト / セキュリティスペシャリスト</li>
+            <li>資格：基本情報 / ソフトウェア開発技術者 / ネットワークスペシャリスト / セキュリティスペシャリスト</li>
           </ul>
           <p>
             UI・UXと合わせた素早いプロトタイピングを得意としています。
