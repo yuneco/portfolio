@@ -44,7 +44,7 @@
           <ul>
             <li>Front: JavaScript(ES2015+) / FW(Vue.js, Riot.js) / CSS(Sass)</li>
             <li>ServerSide: Node.js / Java / Cloud(Firebase, AWS)</li>
-            <li>Detabase: Firebase(RealtimeDB, CloudFirestore) / MongoDB / PostgreSQL</li>
+            <li>Database: Firebase(RealtimeDB, CloudFirestore) / MongoDB / PostgreSQL</li>
             <li>Desktop: Xojo</li>
             <li>資格：基本情報 / ソフトウェア開発技術者 / ネットワークスペシャリスト / セキュリティスペシャリスト</li>
           </ul>
