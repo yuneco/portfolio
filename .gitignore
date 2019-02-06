@@ -3,6 +3,7 @@ node_modules
 /dist
 .private-env
 /work.private
+firebase-debug.log
 
 # local env files
 .env.local
