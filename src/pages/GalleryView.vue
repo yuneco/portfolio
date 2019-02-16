@@ -88,11 +88,14 @@ export default {
     // keep gallery item specified in url onto local data object
     // NOTE: gallery items metadata (=imgMetas) may not be loaded yet.
     this.initialSelId = this.$route.params.filename || null
-    this.bookSlideshow()
+    // init slideshow auto activation
+    document.addEventListener('visibilitychange', this.onvisibilitychange, false)
+    this.onvisibilitychange()
   },
   destroyed () {
     window.clearTimeout(this.slideshowActivateTimerId)
-    this.isSlideshowMode = false
+    this.suspendSlideshow()
+    document.removeEventListener('visibilitychange', this.onvisibilitychange, false)
   },
   methods: {
     async itemChanged (id, item) {
@@ -109,23 +112,44 @@ export default {
       this.$router.replace(`/gallery/${item ? item.id : ''}`)
     },
     async runSlideshow () {
-      this.isSlideshowMode = true
       console.log('Slideshow start')
+      const LIST_DISPLAY_SEC = 2
+      this.isSlideshowMode = true
       while (this.isSlideshowMode) {
+        const crId = this.selId
+        const list = this.$refs.list
+        list.selectItemWithId(null)
+        list.scrollToItem(crId)
+        await Time.wait(LIST_DISPLAY_SEC * 1000)
         const meta = this.imgMetas[MathUtil.intBetween(0, this.imgMetas.length - 1)]
-        this.$refs.list.selectItemWithId(meta.filename)
+        list.selectItemWithId(meta.filename)
         await Time.wait(SLIDESHOW_INTERVAL_SEC * 1000)
       }
       console.log('Slideshow ended')
     },
     bookSlideshow () {
-      // Quit slideshow (if running)
-      this.isSlideshowMode = false
+      // Quit (or cancel booked) slideshow (if running)
+      this.suspendSlideshow()
       // Book slideshow activation after SLIDESHOW_ACTIVATE_SEC sec
-      window.clearTimeout(this.slideshowActivateTimerId)
       this.slideshowActivateTimerId = window.setTimeout(() => {
         this.runSlideshow()
       }, SLIDESHOW_ACTIVATE_SEC * 1000)
+    },
+    suspendSlideshow () {
+      // If runing ... quit
+      // If booked ... cancel
+      // to resume, call bookSlideshow method.
+      this.isSlideshowMode = false
+      window.clearTimeout(this.slideshowActivateTimerId)
+    },
+    onvisibilitychange () {
+      if (document.webkitHidden) {
+        console.log('Detect app deactivated: suspen slideshow')
+        this.suspendSlideshow()
+      } else {
+        console.log('Detect app activated: book next slideshow')
+        this.bookSlideshow()
+      }
     }
   }
 }
