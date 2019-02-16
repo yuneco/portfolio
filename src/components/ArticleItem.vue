@@ -11,8 +11,8 @@
       <div class="description">
         <slot></slot>
       </div>
-      <div class="link" v-if="link">
-        <a :href="link" target="_blank">{{link}}</a>
+      <div class="link" v-for="link in links" :key="link.href">
+        <a :href="link.href" target="_blank">{{link.text}}</a>
       </div>
     </div>
 
@@ -78,8 +78,16 @@
     .link {
       margin-top: 10px;
       font-size: 11pt;
+      position: relative;
+      &+.link {
+        margin-top: 1px;
+      }
       a {
+        display: block;
         color: #1c3854;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
       }
     }
   }
@@ -92,9 +100,20 @@ export default {
   name: 'ArticleItem',
   props: {
     title: { type: String, default: 'No Title' },
-    link: { type: String, default: null },
+    link: { type: [Object, Array], default: null },
     image: { type: String, default: null },
     imgPosition: { type: String, default: 'left' }
+  },
+  computed: {
+    links () {
+      if (Array.isArray(this.link)) {
+        return this.link
+      } else if (this.link) {
+        return [ this.link ]
+      } else {
+        return []
+      }
+    }
   }
 }
 </script>
