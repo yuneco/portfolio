@@ -1,19 +1,21 @@
-const galleryPageOgp = async (db, req, res) => {
+const firebase = require('./firebase.js')
+
+const galleryPageOgp = async (req, res) => {
   try {
-    await createPage(db, req, res)
+    await createPage(req, res)
   } catch (err) {
     console.warn(err)
     res.status(200).end(createDefaultHtml())
   }
 }
 
-const createPage = async (db, req, res) => {
+const createPage = async (req, res) => {
   const [, , imgname] = req.path.split('/')
   if (!imgname) {
     res.status(200).end(createDefaultHtml())
     return
   }
-  const snap = await db.collection('imgs').doc(imgname).get()
+  const snap = await firebase.db.collection('imgs').doc(imgname).get()
   if (!snap) {
     res.status(200).end(createDefaultHtml())
     return

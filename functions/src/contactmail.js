@@ -1,7 +1,7 @@
-const functions = require('firebase-functions')
+const firebase = require('./firebase.js')
 const nodemailer = require('nodemailer')
 
-const config = functions.config()
+const config = firebase.functions.config()
 const account = {
   user: config.admin.contact.mail,
   pass: config.admin.contact.pass,

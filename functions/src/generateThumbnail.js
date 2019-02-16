@@ -1,3 +1,4 @@
+const firebase = require('./firebase.js')
 const path = require('path')
 const os = require('os')
 const fs = require('fs')
@@ -55,13 +56,13 @@ const saveCanvasToFile = (canvas, outPath) => {
   })
 }
 
-const saveMetadataToDb = (db, name, orgWidth, orgHeight, thumbWidth, thumbHeight) => {
+const saveMetadataToDb = (name, orgWidth, orgHeight, thumbWidth, thumbHeight) => {
   const d = new Date()
   const yyyymmdd = d.getFullYear() * 10000
     + (d.getMonth() + 1) * 100
     + d.getDate()
 
-  return db.collection('imgs').doc(name).set({
+  return firebase.db.collection('imgs').doc(name).set({
     filename: name,
     title: `Image - ${name}`,
     description: '',
@@ -87,7 +88,7 @@ const saveMetadataToDb = (db, name, orgWidth, orgHeight, thumbWidth, thumbHeight
 }
 
 const saveMetadataToStorage = async (filePath) => {
-  const bucket = admin.storage().bucket()
+  const bucket = firebase.storage.bucket()
   const file =  bucket.file(filePath)
   const metadata = {
     cacheControl: `public,max-age=300, s-maxage=${3600 * 24 * 30}`
@@ -95,10 +96,10 @@ const saveMetadataToStorage = async (filePath) => {
   return file.setMetadata(metadata)
 }
 
-const generateThumbnail = async (db, storageObject) => {
+const generateThumbnail = async (storageObject) => {
   const fileBucket = storageObject.bucket
   const filePath = storageObject.name
-  const contentType = object.contentType
+  const contentType = storageObject.contentType
 
   if (!filePath.startsWith(IMG_DIR_FULL)) {
     return
@@ -112,7 +113,7 @@ const generateThumbnail = async (db, storageObject) => {
   // download org img file to server local
   const fileName = path.basename(filePath)
   const thumbPath = `${IMG_DIR_THUMB}${fileName}`
-  const bucket = admin.storage().bucket(fileBucket)
+  const bucket = firebase.storage.bucket(fileBucket)
   const tempFilePath = path.join(os.tmpdir(), fileName)
   await bucket.file(filePath).download({destination: tempFilePath})
 
@@ -138,7 +139,7 @@ const generateThumbnail = async (db, storageObject) => {
   await fs.unlinkSync(tempThumbPath)
 
   // write meta datas to fire store
-  await saveMetadataToDb(db, fileName, imgFull.width, imgFull.height, canvas.width, canvas.height)
+  await saveMetadataToDb(fileName, imgFull.width, imgFull.height, canvas.width, canvas.height)
   await saveMetadataToStorage(filePath)
   console.log('ThumbCreate Finished')
 
