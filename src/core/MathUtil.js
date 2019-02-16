@@ -41,6 +41,12 @@ const util = {
 
   inverseAngle (ca) {
     return util.normalizeAngle(-ca)
+  },
+
+  intBetween (min, max) {
+    const minInt = Math.floor(min)
+    const maxInt = Math.floor(max)
+    return Math.floor(Math.random() * (maxInt - minInt + 1) + minInt)
   }
 
 }

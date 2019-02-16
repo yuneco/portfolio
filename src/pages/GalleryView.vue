@@ -5,7 +5,11 @@
         LOADING...
         <loading-bar :colors="appColors"></loading-bar>
       </div>
-      <photo-list v-show="true" ref="list" :metas="imgMetas" @changed="itemChanged"></photo-list>
+      <photo-list v-show="true" ref="list"
+        :metas="imgMetas"
+        @changed="itemChanged"
+        @click="bookSlideshow"
+        ></photo-list>
     </div>
   </div>
 </template>
@@ -33,7 +37,10 @@
 import LoadingBar from '@/components/LoadingBar'
 import PhotoList from '@/components/PhotoList'
 import Time from '@/core/Time'
-// import Apis from '@/api/Apis'
+import MathUtil from '@/core/MathUtil'
+const SLIDESHOW_ACTIVATE_SEC = 40
+const SLIDESHOW_INTERVAL_SEC = 15
+
 export default {
   name: 'GalleryView',
   components: { LoadingBar, PhotoList },
@@ -42,7 +49,10 @@ export default {
       /** current selected item id */
       selId: null,
       /** selId that specified with URL when mounted. Keep until imgMetas are loaded */
-      initialSelId: null
+      initialSelId: null,
+      /* slide show ... */
+      slideshowActivateTimerId: null,
+      isSlideshowMode: false
     }
   },
   computed: {
@@ -78,6 +88,11 @@ export default {
     // keep gallery item specified in url onto local data object
     // NOTE: gallery items metadata (=imgMetas) may not be loaded yet.
     this.initialSelId = this.$route.params.filename || null
+    this.bookSlideshow()
+  },
+  destroyed () {
+    window.clearTimeout(this.slideshowActivateTimerId)
+    this.isSlideshowMode = false
   },
   methods: {
     async itemChanged (id, item) {
@@ -92,6 +107,25 @@ export default {
         this.$store.commit('setAppColors', { colors: null })
       }
       this.$router.replace(`/gallery/${item ? item.id : ''}`)
+    },
+    async runSlideshow () {
+      this.isSlideshowMode = true
+      console.log('Slideshow start')
+      while (this.isSlideshowMode) {
+        const meta = this.imgMetas[MathUtil.intBetween(0, this.imgMetas.length - 1)]
+        this.$refs.list.selectItemWithId(meta.filename)
+        await Time.wait(SLIDESHOW_INTERVAL_SEC * 1000)
+      }
+      console.log('Slideshow ended')
+    },
+    bookSlideshow () {
+      // Quit slideshow (if running)
+      this.isSlideshowMode = false
+      // Book slideshow activation after SLIDESHOW_ACTIVATE_SEC sec
+      window.clearTimeout(this.slideshowActivateTimerId)
+      this.slideshowActivateTimerId = window.setTimeout(() => {
+        this.runSlideshow()
+      }, SLIDESHOW_ACTIVATE_SEC * 1000)
     }
   }
 }

@@ -194,6 +194,7 @@ export default {
       const lastSelectedId = this.selectedId
       this.selectedId = isCloseAction ? null : id
       this.scrollToItem(isCloseAction ? lastSelectedId : id)
+      this.$emit('click', item)
     },
     selectCurrentScrolled (scrollDir = null) {
       const MARGIN_TO_ENTER = 0.3
