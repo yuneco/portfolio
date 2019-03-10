@@ -24,6 +24,7 @@ export default class TL {
     this._isRunning = false
     this._isLoop = false
     this._onEndHndlers = []
+    this._onBreakHndlers = []
     this._canceled = false // DO NOT REST
     this._runCount = 0 // DO NOT REST
   }
