@@ -23,8 +23,8 @@ export default class TL {
     this._breakAtKf = false
     this._isRunning = false
     this._isLoop = false
-    this._onBreakHndlers = []
     this._onEndHndlers = []
+    this._onBreakHndlers = []
     this._canceled = false // DO NOT REST
     this._runCount = 0 // DO NOT REST
   }
@@ -72,29 +72,26 @@ export default class TL {
    * @return {Promise} resolve after timeline is stopped.
    */
   async stop (immd = false) {
-    if (!this.isRunning) {
+    if (!this._isRunning) {
       return Promise.resolve()
     }
     this._breakAtKf = !!immd
     this._breakAtEnd = true
     return new Promise(resolve => {
-      this._onEndHndlers.push(
-        () => {
-          resolve()
-        })
-    })
+      this._onEndHndlers.push(resolve)
+    });
   }
 
   async onend (waitIfNotRunning = false) {
     if (this._canceled) { return Promise.resolve() }
-    if (!this.isRunning && !waitIfNotRunning) { return Promise.resolve() }
+    if (!this._isRunning && !waitIfNotRunning) { return Promise.resolve() }
     return new Promise(resolve => {
       this._onEndHndlers.push(resolve)
     })
   }
 
   async run () {
-    if (this._canceled) { throw new Error(`[${this.name}] is canceled and can not run`) }
+    if (this._canceled) { throw new Error(`[${this._name}] is canceled and can not run`) }
     if (!this._isLoop) {
       this._isRunning = true
     }
@@ -125,7 +122,7 @@ export default class TL {
   }
 
   async runLoop (loopCallback) {
-    if (this._canceled) { throw new Error(`[${this.name}] is canceled and can not run`) }
+    if (this._canceled) { throw new Error(`[${this._name}] is canceled and can not run`) }
     this._isLoop = true
     this._isRunning = true
     let loopCount = 0
@@ -190,6 +187,6 @@ export default class TL {
   }
 
   get isBeforeRun () {
-    return this.runCount === 0
+    return this._runCount === 0
   }
 }
