@@ -79,7 +79,7 @@ export default class TL {
     this._breakAtEnd = true
     return new Promise(resolve => {
       this._onEndHndlers.push(resolve)
-    });
+    })
   }
 
   async onend (waitIfNotRunning = false) {
