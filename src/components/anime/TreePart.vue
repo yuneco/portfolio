@@ -5,8 +5,9 @@
       :len="len"
       :x="x"
       :y="y"
-      :r="r"
+      :r="r + swingAngle"
       :s="s"
+      :dur="swingDur"
       :flower-count="telomere * 5 + 2"
     >
       <tree-part v-for="pos in children" :key="pos.id"
@@ -47,7 +48,9 @@ export default {
   data () {
     return {
       children: [],
-      isAppeared: false
+      isAppeared: false,
+      swingAngle: 0,
+      swingDur: 4500
     }
   },
   methods: {
@@ -66,10 +69,20 @@ export default {
         len: this.len * (0.6 + Math.random() * 0.2),
         s: 0.9
       })
+    },
+    async swingStart () {
+      while (true) {
+        if (!this.$el) { break }
+        this.swingAngle = this.swingAngle > 0 ? -5 : 5
+        await Time.wait(this.swingDur + Math.random() * 2000)
+      }
     }
   },
   async mounted () {
     await Time.wait(this.initialDelay)
+    if (!this.root) {
+      this.swingStart()
+    }
     this.isAppeared = true
     if (this.telomere > 0) {
       while (this.children.length < this.childCount) {
