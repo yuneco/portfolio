@@ -1,7 +1,9 @@
 <template>
   <div class="test">
     <h1>Test Page</h1>
-    <animate-box class="box"></animate-box>
+    <tree-part
+      :x="500" :y="400"
+    ></tree-part>
   </div>
 </template>
 
@@ -12,9 +14,9 @@
 </style>
 
 <script>
-import AnimateBox from '@/components/AnimateBox'
+import TreePart from '@/components/anime/TreePart'
 export default {
   name: 'TestView',
-  components: { AnimateBox }
+  components: { TreePart }
 }
 </script>

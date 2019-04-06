@@ -9,7 +9,7 @@
     ></menu-box>
     </div>
 
-    <div ref="stage" :class="{stage: true, blur: blurStage}">
+    <div ref="stage" :class="{stage: true, blur: blurStage}" v-show="!isTestPage">
       <planet-space v-if="true" :w="stageWidth" :h="stageHeight"
         :perspective="~~perspective"
         :background="spaceBg"
@@ -135,6 +135,9 @@ export default {
     },
     blurStage () {
       return !this.isTopPage
+    },
+    isTestPage () {
+      return this.$route.path === '/test2'
     }
   },
   async mounted () {
