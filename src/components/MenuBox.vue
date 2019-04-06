@@ -64,7 +64,7 @@
   font-size: 22pt;
   font-weight: bold;
   line-height: 80px;
-  text-shadow: 0px 0px 12px #002030;
+  text-shadow: 0px 0px 12px #282329;
 }
 
 .selected {
