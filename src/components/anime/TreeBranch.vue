@@ -94,28 +94,38 @@ export default {
   },
   computed: {
     clipPath () {
+      // 枝先端の根元に対する太さ
       const EDGE = 0.5
       const [w, l] = [this.width, this.len]
+      // 根元と先端の点
       const pS = new Point(0, 0)
       const pE = new Point(0, -l)
+      // 根元と先端を含む点の数
       const PCOUNT = 5
-      const X_RND_MAX = 1.8
+      // 左右の曲がり具合
+      const X_RND_MAX = 1.3
+      // 横幅の半分のベクトル
       const pHarfW = new Point(w / 2, 0)
+      // 中心線の根元と先端を除く中間点
       const pMidBase = Array(PCOUNT - 2)
         .fill(0)
         .map((v, index) => new Point(0, (index + 1) * (-l / (PCOUNT - 1))))
         .map((p, index) => p.add(pHarfW.times((Math.random() - 0.5) * X_RND_MAX)))
+      // 左側：中心線をコピーして「横幅の半分のベクトル」分だけマイナス
       const pMidLeft = [pS, ...pMidBase, pE].map(p => {
         const yRate = (p.y - pS.y) / (pE.y - pS.y)
         return p.sub(pHarfW.times(EDGE + (1 - yRate) * (1 - EDGE)))
       })
+      // 右側：中心線をコピーして「横幅の半分のベクトル」分だけプラス
       const pMidRight = [pS, ...pMidBase, pE].map(p => {
         const yRate = (p.y - pS.y) / (pE.y - pS.y)
         return p.add(pHarfW.times(EDGE + (1 - yRate) * (1 - EDGE)))
       })
+      // 左右を結合
       const points = [...pMidLeft, ...(pMidRight.reverse())]
-
+      // Point → x,y の文字列変換
       const p2str = p => `${Math.round(p.x)},${Math.round(p.y)}`
+      // 結合した全ての点を文字列に変換してSVGのパスを生成
       return 'M' + points.map(p => p2str(p)).join(' L') + 'z'
     },
     lines () {
