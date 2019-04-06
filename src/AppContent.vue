@@ -112,7 +112,9 @@ export default {
   },
   computed: {
     appColors () {
-      return [...this.$store.state.common.colors, '#006987', '#020751', '#acd', '#99aacc', '#f8d899']
+      // const DEF_COLORS_NIGHT = ['#006987', '#020751', '#acd', '#99aacc', '#f8d899']
+      const DEF_COLORS_SPRING = ['#f9cabd', '#8b9fba', '#8b8fb7', '#ffda6b', '#c4e268']
+      return [...this.$store.state.common.colors, ...DEF_COLORS_SPRING]
     },
     spaceBg () {
       return new Gradient([this.appColors[0], this.appColors[1]]).toString()

@@ -1,6 +1,6 @@
 <template>
   <div class="treepart">
-    <tree-branch
+    <tree-branch v-if="isAppeared"
       :width="width"
       :len="len"
       :x="x"
@@ -41,11 +41,13 @@ export default {
     width: { type: Number, default: 23 },
     telomere: { type: Number, default: 2 },
     childCount: { type: Number, default: 3 },
-    root: { type: Boolean, default: true }
+    root: { type: Boolean, default: true },
+    initialDelay: { type: Number, default: 0 }
   },
   data () {
     return {
-      children: []
+      children: [],
+      isAppeared: false
     }
   },
   methods: {
@@ -62,11 +64,13 @@ export default {
         w: this.width * 0.7,
         r: baseAngle * index - (ANGLE_RANGE / 2) + (ANGLE_RND * (Math.random() - 0.5)),
         len: this.len * (0.6 + Math.random() * 0.2),
-        s: this.s * 0.9
+        s: 0.9
       })
     }
   },
   async mounted () {
+    await Time.wait(this.initialDelay)
+    this.isAppeared = true
     if (this.telomere > 0) {
       while (this.children.length < this.childCount) {
         await Time.wait(600 + 1500 * Math.random())
