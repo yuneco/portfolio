@@ -8,6 +8,17 @@
 
     <bg-stars :w="w" :h="h"></bg-stars>
 
+      <e-cont class="planet3" :x="planet3pos.x" :y="planet3pos.y">
+        <r-cont :ch="planet3pos.s * 40" :x="-20" rotate-dur="30000" orbit-line="1px dotted #aaddff99">
+          <tree
+            :child-count="2"
+            :initial-delay="10000"
+            :s="0.6"
+          ></tree>
+        </r-cont>
+        <planet ref="planet3" :rdur="30000" :size="planet3pos.s * 100" :color="planetColor3" @click="changePlanet('planet3')"></planet>
+      </e-cont>
+
       <e-cont class="planet2" :x="planet2pos.x" :y="planet2pos.y">
         <r-cont :ch="planet2pos.s * 75" rotate-dur="13000" orbit-line="3px dotted #ffffff80">
           <planet :size="planet2pos.s * 20" color="#f8a066"></planet>
@@ -22,22 +33,21 @@
         <planet ref="planet2" :rdur="-16000" :size="planet2pos.s * 100" :color="planetColor2" @click="changePlanet('planet2')"></planet>
       </e-cont>
 
-      <e-cont class="planet1" :x="planet1pos.x" :y="planet1pos.y">
-        <r-cont :ch="planet1pos.s * 125" rotate-dur="18000" orbit-line="1px dotted #aaddff99">
-          <planet :rdur="3500" :size="planet1pos.s * 10" color="#ddd"></planet>
-        </r-cont>
-
-        <planet ref="planet1" :rdur="25000" :size="planet1pos.s * 100" :color="planetColor1" @click="changePlanet('planet1')"></planet>
-      </e-cont>
-
-      <e-cont class="planet3" :x="planet3pos.x" :y="planet3pos.y">
-        <planet ref="planet3" :rdur="10000" :size="planet3pos.s * 100" :color="planetColor3" @click="changePlanet('planet3')"></planet>
-      </e-cont>
-
       <e-cont class="cnfy-planet" :s="cnfyPlanetPos.s" :x="cnfyPlanetPos.x" :y="cnfyPlanetPos.y" :dur="4500">
         <r-cont :ch="50" :s="0.08" :r="-100" :x="cnfyState.x" :dur="cnfyState.stepSpeed * 2" easeing="ease-in-out">
           <cnfy-action :y="-10" ref="cnfy" @click="cnfyClick"></cnfy-action>
         </r-cont>
+      </e-cont>
+
+      <e-cont class="planet1" :x="planet1pos.x" :y="planet1pos.y">
+        <r-cont :ch="planet1pos.s * 125" rotate-dur="18000" orbit-line="1px dotted #aaddff99">
+          <planet :rdur="3500" :size="planet1pos.s * 10" color="#ddd"></planet>
+        </r-cont>
+        <r-cont :ch="planet1pos.s * 45" :x="35" rotate-dur="0" orbit-line="1px dotted #aaddff99">
+          <tree></tree>
+        </r-cont>
+
+        <planet ref="planet1" :rdur="25000" :size="planet1pos.s * 100" :color="planetColor1" @click="changePlanet('planet1')"></planet>
       </e-cont>
 
   </div>
@@ -56,13 +66,14 @@ import BgStars from '@/components/anime/BgStars'
 import ECont from '@/components/anime/core/ECont'
 import RCont from '@/components/anime/core/RCont'
 import CnfyAction from '@/components/anime/CnfyAction'
+import Tree from '@/components/anime/TreePart'
 import Time from '@/core/Time'
 
 const DEFAULT_PLANET_SIZE = 100
 
 export default {
   name: 'PlanetSpace',
-  components: { BgStars, Planet, ECont, RCont, CnfyAction },
+  components: { BgStars, Planet, ECont, RCont, CnfyAction, Tree },
   props: {
     w: { type: Number, default: 100 },
     h: { type: Number, default: 100 },
