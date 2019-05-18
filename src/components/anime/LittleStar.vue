@@ -17,6 +17,7 @@
 // import ColorUtil from '@/core/ColorUtil'
 import TL from '@/core/TL'
 import ECont from '@/components/anime/core/ECont'
+
 export default {
   name: 'LittleStar',
   components: { ECont },
@@ -45,12 +46,14 @@ export default {
         dur: 200
       }).wait(200).to({
         r: 0,
-        dur: 0
+        dur: 1
       })
   },
   methods: {
     async twinkle () {
-      await this.twinkleTl.run()
+      if (this.type === 'star') {
+        await this.twinkleTl.run()
+      }
     }
   }
 }
