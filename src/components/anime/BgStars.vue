@@ -1,15 +1,24 @@
 <template>
   <div class="bgstars-root">
-    <e-cont v-for="pos in poses" :key="pos.id"
-      :x="pos.x" :y="pos.y" :z="pos.z" :s="pos.s" :r="pos.r"
-    >
-      <little-star ref="stars" :type="pos.type" :color="pos.color"></little-star>
-    </e-cont>
+    <div class="stars">
+      <e-cont v-for="pos in posesStar" :key="pos.id"
+        :x="pos.x" :y="pos.y" :z="pos.z" :s="pos.s" :r="pos.r"
+      >
+        <little-star ref="stars" :type="pos.type" :color="pos.color"></little-star>
+      </e-cont>
+    </div>
+    <div class="circles">
+      <e-cont v-for="pos in posesCircle" :key="pos.id"
+        :x="pos.x" :y="pos.y" :z="pos.z" :s="pos.s" :r="pos.r"
+      >
+        <little-star ref="circles" :type="pos.type" :color="pos.color"></little-star>
+      </e-cont>
+    </div>
   </div>
 </template>
 
 <style scoped>
-.bgstars-root {
+.bgstars-root, .stars, .circles {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -61,6 +70,12 @@ export default {
             type
           }
         })
+    },
+    posesStar () {
+      return this.poses.filter(p => p.type === 'star')
+    },
+    posesCircle () {
+      return this.poses.filter(p => p.type === 'circle')
     }
   },
   mounted () {
