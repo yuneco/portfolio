@@ -32,6 +32,7 @@
     position: absolute;
     border: 0px solid red;
     box-sizing: border-box;
+    will-change: transform;
   }
   .orbit {
     position: absolute;

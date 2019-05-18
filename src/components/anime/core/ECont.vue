@@ -1,9 +1,10 @@
 <template>
   <div class="elem-container" :style="{
       transformOrigin: `${ox}px ${oy}px`,
-      transform: `translate3d(${x}px, ${y}px, ${z}px) scale(${s}) rotate(${r}deg)`,
+      transform: `translate(${x}px, ${y}px) scale(${s}) rotate(${r}deg)`,
       transition: `transform ${dur}ms 0s ${easing},
       transform-origin ${dur}ms 0s ${easing}`,
+      'will-change': isWillChangeEnabled ? 'transform' : 'auto',
     }"
     @click="clicked"
     >
@@ -51,7 +52,13 @@ export default {
     r: { type: [Number, String], default: 0 },
     s: { type: [Number, String], default: 1 },
     dur: { type: [Number, String], default: 0 },
-    easing: { type: String, default: 'ease' }
+    easing: { type: String, default: 'ease' },
+    enableGpu: { type: Boolean, default: false }
+  },
+  computed: {
+    isWillChangeEnabled () {
+      return !!(this.enableGpu || this.dur)
+    }
   },
   methods: {
     clicked (...args) {

@@ -2,7 +2,7 @@
   <div class="test">
     <h1>Test Page</h1>
     <tree-part
-      :x="500" :y="400"
+      :x="300" :y="500"
     ></tree-part>
   </div>
 </template>
