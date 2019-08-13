@@ -113,7 +113,7 @@ export default {
   computed: {
     appColors () {
       // const DEF_COLORS_NIGHT = ['#006987', '#020751', '#acd', '#99aacc', '#f8d899']
-      const DEF_COLORS_SPRING = ['#104050', '#8b9fba', '#daddd8', '#ffda6b', '#a0aaa9']
+      const DEF_COLORS_SPRING = ['rgb(172,208,210)', 'rgb(116,188,206)', '#90c0dd', '#ffda6b', '#ccddee']
       return [...this.$store.state.common.colors, ...DEF_COLORS_SPRING]
     },
     spaceBg () {

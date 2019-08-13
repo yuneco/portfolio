@@ -35,19 +35,20 @@
     </svg>
 
     <!-- accessories -->
-    <div class="flowers"
+    <div class="leafblocks"
       :style="{
         left: `${-width/2}px`,
         top: `${-len}px`
       }"
     >
-      <tree-flower v-for="fl in flowers" :key="fl.id"
-        :x="fl.x"
-        :y="fl.y"
-        :r="fl.r"
+      <tree-leaf-block v-for="leaf in leafBlocks" :key="leaf.id"
+        :x="leaf.x"
+        :y="leaf.y"
+        :r="leaf.r"
         :s="0.2"
+        :max-count="leaf.maxCount"
       >
-      </tree-flower>
+      </tree-leaf-block>
     </div>
 
   </e-cont>
@@ -57,7 +58,7 @@
 svg {
   position: absolute;
 }
-.flowers {
+.leafblocks {
   position: absolute;
   z-index: 1;
 }
@@ -68,12 +69,12 @@ svg {
 import ColorUtil from '@/core/ColorUtil'
 // import TL from '@/core/TL'
 import ECont from '@/components/anime/core/ECont'
-import TreeFlower from '@/components/anime/TreeFlower'
+import TreeLeafBlock from '@/components/anime/TreeLeafBlock'
 import Time from '@/core/Time'
 import Point from '@/core/Point'
 export default {
   name: 'TreeBranch',
-  components: { ECont, TreeFlower },
+  components: { ECont, TreeLeafBlock },
   props: {
     color: { type: String, default: '#886644' },
     width: { type: Number, default: 20 },
@@ -83,13 +84,13 @@ export default {
     r: { type: Number, default: 0 },
     s: { type: Number, default: 1.0 },
     dur: { type: Number, default: 3000 },
-    flowerCount: { type: Number, default: 5 }
+    leafBlockCount: { type: Number, default: 5 }
   },
   data () {
     return {
       rndid: 'TreeBranch-' + Math.random(),
       isInited: false,
-      flowers: []
+      leafBlocks: []
     }
   },
   computed: {
@@ -148,32 +149,35 @@ export default {
     }
   },
   methods: {
-    addFlower () {
+    addLeafBlock () {
       const AREA = {
-        X0: -this.width * 3,
-        X1: this.width * 3,
+        X0: -this.width * 1.5,
+        X1: this.width * 2.5,
         Y0: -this.len * 0.2,
-        Y1: this.len * 0.5
+        Y1: this.len * 0.4
       }
-      this.flowers.push({
-        id: `${this.rndid}-flower-${this.flowers.length}`,
+      const ROTATE_RANGE = 30
+      const LEAF_COUNT_MIN = 1
+      const LEAF_COUNT_MAX = 3
+      this.leafBlocks.push({
+        id: `${this.rndid}-leafblock-${this.leafBlocks.length}`,
         x: AREA.X0 + (AREA.X1 - AREA.X0) * Math.random(),
         y: AREA.Y0 + (AREA.Y1 - AREA.Y0) * Math.random(),
-        r: 360 * Math.random()
+        r: ROTATE_RANGE * (Math.random() - 0.5),
+        maxCount: Math.floor(LEAF_COUNT_MIN + (LEAF_COUNT_MAX - LEAF_COUNT_MIN + 1) * Math.random())
       })
     }
   },
   async mounted () {
     await Time.wait(100)
     this.isInited = true
-    const FIRST_FLOWER_WAIT = 1000 + Math.random() * 1000
-    const FLOWER_INTERVAL_MIN = 1500
-    const FLOWER_INTERVAL_MAX = 7500
-    await Time.wait(FIRST_FLOWER_WAIT)
-    while (this.flowers.length < this.flowerCount) {
-      await Time.wait(FLOWER_INTERVAL_MIN + Math.random(FLOWER_INTERVAL_MAX - FLOWER_INTERVAL_MIN))
-      this.addFlower()
-      // console.count('add-flower')
+    const FIRST_LEAFBLOCK_WAIT = 1000 + Math.random() * 1000
+    const LEAFBLOCK_INTERVAL_MIN = 1500
+    const LEAFBLOCK_INTERVAL_MAX = 7500
+    await Time.wait(FIRST_LEAFBLOCK_WAIT)
+    while (this.leafBlocks.length < this.leafBlockCount) {
+      await Time.wait(LEAFBLOCK_INTERVAL_MIN + Math.random(LEAFBLOCK_INTERVAL_MAX - LEAFBLOCK_INTERVAL_MIN))
+      this.addLeafBlock()
     }
   }
 }

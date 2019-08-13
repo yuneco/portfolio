@@ -8,8 +8,8 @@
     :oy="0"
     :dur="isAnimEnded ? 0 : 600"
   >
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 83.81 116.71" width="80" height="100">
-      <path d="M41.73,116.67a.43.43,0,0,0,.35,0c11.31-5,31-30.17,39.81-63.14C87.54,32.45,80.52,8.42,63.52,1.07,54.37-2.87,47.37,5.34,41.91,5.34S29.44-2.87,20.3,1.07c-17,7.35-24,31.38-18.38,52.46C10.76,86.5,30.42,111.7,41.73,116.67Z"
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 66.3 115.3" width="66" height="115">
+    <path d="M33.2,115.2c6.3-0.5,14.6-8.9,26.6-39.1C71.5,46.6,69.2,0.4,33.2,0.4S-5.1,46.6,6.6,76C18.6,106.3,27,114.6,33.2,115.2z"
       :fill="color"
       />
     </svg>
@@ -29,10 +29,10 @@ import ECont from '@/components/anime/core/ECont'
 import ColorUtil from '@/core/ColorUtil'
 import Time from '@/core/Time'
 export default {
-  name: 'TreePetal',
+  name: 'TreeLeaf',
   components: { ECont },
   props: {
-    color: { type: String, default: () => ColorUtil.rndBetween('#FFF1F0', '#FFB1A8').toString() },
+    color: { type: String, default: () => ColorUtil.rndBetween('#83D6B8', '#1B98A1').toString() },
     x: { type: Number, default: 0 },
     y: { type: Number, default: 0 },
     r: { type: Number, default: 0 },

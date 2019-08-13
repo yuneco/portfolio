@@ -8,7 +8,7 @@
       :r="r + swingAngle"
       :s="s"
       :dur="swingDur"
-      :flower-count="telomere * 5 + 2"
+      :leat-block-count="telomere * 6 + 12"
     >
       <tree-part v-for="pos in children" :key="pos.id"
         :telomere="telomere ? telomere - 1 : 0"
@@ -38,7 +38,7 @@ export default {
     y: { type: Number, default: 0 },
     r: { type: Number, default: 0 },
     s: { type: Number, default: 1.0 },
-    len: { type: Number, default: 200 },
+    len: { type: Number, default: 125 },
     width: { type: Number, default: 23 },
     telomere: { type: Number, default: 2 },
     childCount: { type: Number, default: 3 },
@@ -55,8 +55,8 @@ export default {
   },
   methods: {
     addChildBranch () {
-      const ANGLE_RANGE = 100
-      const ANGLE_RND = 15
+      const ANGLE_RANGE = 80
+      const ANGLE_RND = 20
       const index = this.children.length
       const baseAngle = ANGLE_RANGE / Math.max(1, (this.childCount - 1))
       const isCenter = index === (this.childCount - 1) / 2
