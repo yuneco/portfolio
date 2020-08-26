@@ -1,14 +1,9 @@
+const ImageminPlugin = require('imagemin-webpack-plugin').default
+const ImageminWebp = require('imagemin-webp-webpack-plugin')
+const ImageminMozJpeg = require('imagemin-mozjpeg')
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 module.exports = {
-  // css: {
-  //   loaderOptions: {
-  //     sass: {
-  //       data: '@import "@/assets/shared-mixin.scss";'
-  //     }
-  //   }
-  // },
-
   chainWebpack (config) {
     // Remove existing SVG rule which uses file-loader
     config.module.rules.delete('svg')
@@ -32,11 +27,30 @@ module.exports = {
       .entry('main')
       .add('./src/main.js')
 
-    // config
-    //   .plugin('webpack-bundle-analyzer')
-    //   .use(BundleAnalyzerPlugin)
-    //   .init(Plugin => new Plugin({
-    //     openAnalyzer: false
-    //   }))
+    config
+      .plugin('ImageminWebp')
+      .use(ImageminWebp, [{
+        test: /\.(jpg|png)$/i,
+        // disable: process.env.NODE_ENV !== 'production', // Disable during development
+        option: {
+          quality: 85
+        }
+      }])
+
+    config
+      .plugin('ImageminPlugin')
+      .use(ImageminPlugin, [{
+        test: /\.(jpg|png)$/i,
+        // disable: process.env.NODE_ENV !== 'production', // Disable during development
+        pngquant: {
+          quality: '100'
+        },
+        plugins: [
+          ImageminMozJpeg({
+            quality: 75,
+            progressive: true
+          })
+        ]
+      }])
   }
 }

@@ -11,8 +11,8 @@
         >
           <photo-item  ref="itemRef"
             :title="item.meta.title"
-            :src="item.meta.org.url"
-            :thumbSrc="item.meta.thumb.url"
+            :src="item.meta.orgOptimizedUrl"
+            :thumbSrc="item.meta.thumbOptimizedUrl"
             :basecolor="item.meta.colors.main"
             :left="item.pos.left"
             :top="item.pos.top"
@@ -65,6 +65,7 @@
 import PhotoItem from './PhotoItem'
 import Time from '@/core/Time'
 import Scroller from '@/core/Scroller'
+import isWebpSupported from '@/core/isWebpSupported'
 
 const TITLEBOX_HEIGHT = 20
 
@@ -84,6 +85,9 @@ export default {
     }
   },
   computed: {
+    imgFormat () {
+      return isWebpSupported ? 'webp' : 'jpeg'
+    },
     isSelected () {
       return !!this.selectedId
     },

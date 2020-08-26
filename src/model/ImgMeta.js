@@ -1,4 +1,8 @@
 import Colorset from './Colorset'
+import isWebpSupported from '@/core/isWebpSupported'
+
+import { GALLERY_IMG_ENDPOINT, GALLERY_THUMB_ENDPOINT } from '@/api/SiteConfig'
+const imgFormat = isWebpSupported ? 'webp' : 'jpeg'
 
 /*
   ImgMeta class:
@@ -44,6 +48,8 @@ export default class ImgMeta {
   get org () { return this._data.org }
   get thumb () { return this._data.thumb }
   get colors () { return this._data.colors }
+  get orgOptimizedUrl () { return `${GALLERY_IMG_ENDPOINT}${this.filename}.${imgFormat}` }
+  get thumbOptimizedUrl () { return `${GALLERY_THUMB_ENDPOINT}${this.filename}.${imgFormat}` }
 
   set title (v) { this._data.title = v }
   set description (v) { this._data.description = v }

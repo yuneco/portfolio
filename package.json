@@ -14,6 +14,9 @@
     "core-js": "^3.6.5",
     "easing-functions": "^1.0.1",
     "firebase": "^7.19.0",
+    "imagemin-mozjpeg": "^9.0.0",
+    "imagemin-webp-webpack-plugin": "^3.3.2",
+    "imagemin-webpack-plugin": "^2.4.2",
     "skmeans": "^0.11.3",
     "vue": "^2.6.11",
     "vue-analytics": "^5.22.1",
@@ -30,6 +33,7 @@
     "@vue/cli-service": "~4.5.0",
     "@vue/eslint-config-standard": "^5.1.2",
     "babel-eslint": "^10.1.0",
+    "babel-plugin-transform-remove-console": "^6.9.4",
     "eslint": "^6.7.2",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-node": "^11.1.0",
@@ -38,6 +42,7 @@
     "eslint-plugin-vue": "^6.2.2",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
+    "svg-to-vue-component": "^0.3.8",
     "vue-template-compiler": "^2.6.11"
   }
 }

@@ -17,7 +17,7 @@ class ImgListApi extends ApiBase {
     snap.forEach(doc => {
       docs.push(new ImgMeta(doc.data()))
     })
-    const urls = docs.map(doc => doc.thumb.url)
+    const urls = docs.map(doc => doc.thumbOptimizedUrl)
     this.preloadImgs(urls)
 
     return docs

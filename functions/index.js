@@ -1,9 +1,9 @@
-
 const firebase = require('./src/firebase.js')
 const generateThumbnail = require('./src/generateThumbnail')
 const deleteRelatedImg = require('./src/deleteRelatedImg')
 const sendContactmail = require('./src/sendContactmail')
 const galleryPageOgp = require('./src/galleryPageOgp')
+const galleryImageWebp = require('./src/galleryImageWebp')
 
 // create thumbnail and db record when img uploaded
 exports.generateThumbnail = firebase.functions.storage.object()
@@ -29,3 +29,10 @@ exports.galleryPageOgp = firebase.functions
   .onRequest((req, res) => {
     galleryPageOgp(req, res)
   })
+
+exports.galleryImageWebp = firebase.functions
+.runWith({timeoutSeconds: 20, memory: '512MB'})
+.https
+.onRequest((req, res) => {
+  galleryImageWebp(req, res)
+})

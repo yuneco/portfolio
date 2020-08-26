@@ -6,7 +6,7 @@
       <transition appear name="slide-r">
         <article-item class="about"
           title="Welcome to Nekobooks"
-          image="/img/profile.jpg"
+          :image="`/img/profile.${format}`"
         >
           <p>
             Nekobooksはイラストレーター・UXエンジニア・開発者の「ゆき」が開発・運営する個人サイトです。
@@ -22,7 +22,7 @@
       <transition appear name="slide-l">
         <article-item class="illust"
           title="Illiustration and Design Skills"
-          image="/img/painter.jpg"
+          :image="`/img/painter.${format}`"
           img-position="right"
         >
           <ul>
@@ -39,7 +39,7 @@
       <transition appear name="slide-r">
         <article-item class="develop"
           title="Development Skills"
-          image="/img/develop.jpg"
+          :image="`/img/develop.${format}`"
         >
           <ul>
             <li>Front: JavaScript(ES2015+) / FW(Vue.js, Riot.js) / CSS(Sass)</li>
@@ -119,8 +119,17 @@ ul {
 <script>
 import ProfileIcon from '@/components/ProfileIcon'
 import ArticleItem from '@/components/ArticleItem'
+import isWebpSupported from '@/core/isWebpSupported'
+
+const imgFormat = isWebpSupported ? 'webp' : 'jpg'
+
 export default {
   name: 'InfoView',
-  components: { ProfileIcon, ArticleItem }
+  components: { ProfileIcon, ArticleItem },
+  computed: {
+    format () {
+      return imgFormat
+    }
+  }
 }
 </script>
