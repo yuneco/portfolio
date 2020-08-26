@@ -15,6 +15,8 @@ const IMGDIR = {
   [TYPE_THUMB]: IMG_DIR_THUMB
 }
 
+const ALLOWED_FORMATS = ['webp', 'jpg', 'jpeg', 'png']
+
 const galleryImageWebp = async (req, res) => {
   try {
     const params = req.path.match(/([a-zA-Z0-9]+)\/([-_a-zA-Z0-9]+)\.([a-zA-Z0-9]+)\??.*$/)
@@ -29,7 +31,7 @@ const galleryImageWebp = async (req, res) => {
       res.status(404).end()
       return
     }
-    if (!format) {
+    if (!format || !ALLOWED_FORMATS.includes(format)) {
       console.warn(`invalid img name: ${imgname}`)
       res.status(404).end()
       return
