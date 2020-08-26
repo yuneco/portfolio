@@ -38,7 +38,7 @@ export default {
       this.currentName = ''
       const imgs = await AdminApis.ImgList.loadImgMetaDataList()
       this.totalCount = imgs.length
-      for (let img of imgs) {
+      for (const img of imgs) {
         this.currentName = img.filename
         this.progressCount++
         const pathOrg = img.org.path

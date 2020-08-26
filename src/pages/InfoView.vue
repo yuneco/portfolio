@@ -61,6 +61,8 @@
 </template>
 
 <style lang="scss" scoped>
+@use "@/assets/shared-mixin.scss" as mixin;
+
 .slide-r-enter-active, .slide-r-leave-active {
   transition: all 1s;
 }
@@ -89,7 +91,7 @@ ul {
     position: relative;
     left: 0px;
     top: 0px;
-    @include sp-screen() {
+    @include mixin.sp-screen() {
       top: -70px;
     }
   }

@@ -23,7 +23,7 @@ export default class ContqactApi {
       }
     } catch (err) {
       console.warn(err)
-      throw new Error(`failed to send mail`, err)
+      throw new Error('failed to send mail', err)
     }
   }
 }

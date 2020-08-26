@@ -20,6 +20,8 @@
 </template>
 
 <style lang="scss" scoped>
+@use "@/assets/shared-mixin.scss" as mixin;
+
 .article-item-root div {
   box-sizing: border-box;
   // border: 1px solid red;
@@ -40,7 +42,7 @@
     background-position: center;
     background-repeat: no-repeat;
     min-height: 200px;
-    @include sp-screen() {
+    @include mixin.sp-screen() {
       width: 100%;
       min-height: 150px;
     }
@@ -62,7 +64,7 @@
     width: calc(60% - 20px);
     margin: 0 0 0 20px;
     padding: 10px;
-    @include sp-screen() {
+    @include mixin.sp-screen() {
       width: 100%;
       margin: 10px 0 0 0;
     }
@@ -109,7 +111,7 @@ export default {
       if (Array.isArray(this.link)) {
         return this.link
       } else if (this.link) {
-        return [ this.link ]
+        return [this.link]
       } else {
         return []
       }

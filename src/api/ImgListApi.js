@@ -45,7 +45,7 @@ class ImgListApi extends ApiBase {
   }
 
   async preloadImgs (urls) {
-    for (let url of urls) {
+    for (const url of urls) {
       await this.preloadImg(url, false)
     }
   }

@@ -10,6 +10,7 @@ export default class ImageAnalyzer {
     this.imgData = imgData
     this.cache = {} // colorCount -> colorset
   }
+
   /**
    * execute clustering
    * @param {Number} count cluster count = max color count you will get
@@ -46,6 +47,7 @@ export default class ImageAnalyzer {
     }
     return colset
   }
+
   /**
    * @param {Color} col
    * @return {Number} 0 - 1
@@ -57,22 +59,27 @@ export default class ImageAnalyzer {
     const v = (hsv.s / 100) * (hsv.v / 100)
     return v * MAX + (1 - v) * MIN
   }
+
   col2modelArr (col) {
     const o = col[COLOR_MODEL]
     return [o[COLOR_MODEL.charAt(0)] / ((COLOR_MODEL === 'hsl' || COLOR_MODEL === 'hsv') ? 3.6 / HUE_SCALE : 1), o[COLOR_MODEL.charAt(1)], o[COLOR_MODEL.charAt(2)]]
   }
+
   modelArr2col (arr) {
     return chromatism.convert({
       [COLOR_MODEL.charAt(0)]: arr[0] * ((COLOR_MODEL === 'hsl' || COLOR_MODEL === 'hsv') ? 3.6 / HUE_SCALE : 1),
       [COLOR_MODEL.charAt(1)]: arr[1],
-      [COLOR_MODEL.charAt(2)]: arr[2] }
+      [COLOR_MODEL.charAt(2)]: arr[2]
+    }
     )
   }
+
   pixel (x, y) {
     const offset = (y * this.imgData.width + x) * 4
     const [r, g, b] = [...this.imgData.data.slice(offset, offset + 3)]
     return chromatism.convert({ r, g, b })
   }
+
   _pickPixelsInBlock (blockSize, bx, by, expectedCount) {
     if (!expectedCount) {
       expectedCount = this._expectedCountAtBlock(blockSize, bx, by)
@@ -93,6 +100,7 @@ export default class ImageAnalyzer {
     }
     return pixels
   }
+
   _expectedCountAtBlock (blockSize, bx, by) {
     const MINCOUNT = 0.5
     const MAXCOUNT = 4

@@ -11,9 +11,11 @@ export default class Colorset {
     list.sort((a, b) => b.p - a.p)
     this.list = list
   }
+
   itemAt (index) {
     return this.list[index]
   }
+
   get array () { return this.list }
   get length () { return this.list.length }
   get colors () { return this.list.map(item => item.c) }
@@ -24,12 +26,14 @@ export default class Colorset {
     })
     return { list: cplist }
   }
+
   fromObj (o) {
     const cplist = o.list.map(item => {
       return { c: [...item.c], p: item.p }
     })
     this.list = cplist
   }
+
   clone () {
     const c = new Colorset()
     c.fromObj(this.toObj())

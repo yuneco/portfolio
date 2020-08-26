@@ -39,6 +39,7 @@ export default class TL {
     this._kfs.push({ type: TYPE_WAIT, ms })
     return this
   }
+
   /**
    * change props of the target using assigned objct's props.
    * @param {Object} to
@@ -47,6 +48,7 @@ export default class TL {
     this._kfs.push({ type: TYPE_TO, to })
     return this
   }
+
   /**
    * add assigned objct's props value to the target's props.
    * @param {Object} by
@@ -55,6 +57,7 @@ export default class TL {
     this._kfs.push({ type: TYPE_BY, by })
     return this
   }
+
   /**
    * execute any callback function.
    * @param {Function} f

@@ -37,7 +37,7 @@ export default {
         {
           id: 'apps-ebako',
           title: '絵箱',
-          description: `絵箱はMac用のフリーの画像ビューアです。標準アプリのようなシンプルでわかりやすいUIで、画像をサムネイルで一覧したり簡単な編集を行ったりすることができます。2019年に64bit・Retina・Mojaveダークモード等、最新の環境に対応する新バージョン(ver5)をリリースしました。`,
+          description: '絵箱はMac用のフリーの画像ビューアです。標準アプリのようなシンプルでわかりやすいUIで、画像をサムネイルで一覧したり簡単な編集を行ったりすることができます。2019年に64bit・Retina・Mojaveダークモード等、最新の環境に対応する新バージョン(ver5)をリリースしました。',
           link: [
             { href: 'http://nekobooks.com/main/ebako/', text: 'http://nekobooks.com/main/ebako/' }
           ],

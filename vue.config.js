@@ -1,13 +1,13 @@
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 module.exports = {
-  css: {
-    loaderOptions: {
-      sass: {
-        data: `@import "@/assets/shared-mixin.scss";`
-      }
-    }
-  },
+  // css: {
+  //   loaderOptions: {
+  //     sass: {
+  //       data: '@import "@/assets/shared-mixin.scss";'
+  //     }
+  //   }
+  // },
 
   chainWebpack (config) {
     // Remove existing SVG rule which uses file-loader
@@ -21,6 +21,16 @@ module.exports = {
       .end()
       .use('svg-to-vue-component')
       .loader('svg-to-vue-component/loader')
+
+    // clear the existing entry point
+    config
+      .entry('main')
+      .clear()
+
+    // add your custom entry point
+    config
+      .entry('main')
+      .add('./src/main.js')
 
     // config
     //   .plugin('webpack-bundle-analyzer')

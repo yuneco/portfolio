@@ -9,6 +9,7 @@ export default class Rnd {
       w: (initialSeed || 0) * 1 || 88675123
     }
   }
+
   next (mod = 0) {
     const s = this._s
     const t = s.x ^ (s.x << 11)

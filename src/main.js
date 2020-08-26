@@ -2,8 +2,6 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-// import './registerServiceWorker'
-// require('./assets/shared-mixin.scss')
 import 'whatwg-fetch'
 import VueAnalytics from 'vue-analytics'
 

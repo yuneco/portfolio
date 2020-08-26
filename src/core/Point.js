@@ -8,18 +8,23 @@ export default class Point {
       this._y = y
     }
   }
+
   toString () {
     return `{x:${this.x}, y:${this.y}}`
   }
+
   add (p) {
     return new Point(this.x + p.x, this.y + p.y)
   }
+
   sub (p) {
     return new Point(this.x - p.x, this.y - p.y)
   }
+
   times (times) {
     return new Point(this.x * times, this.y * times)
   }
+
   multiply (p) {
     return new Point(this.x * p.x, this.y * p.y)
   }

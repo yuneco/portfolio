@@ -133,7 +133,8 @@ export default {
         return {
           id: meta.filename,
           pos: isUseSelPos ? selPos : itemPos,
-          meta: meta }
+          meta: meta
+        }
       })
     },
     selItemPos () {

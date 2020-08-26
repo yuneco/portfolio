@@ -56,6 +56,7 @@ export default class ImgMeta {
     this._data.org.url = v.url || null
     this._data.org.path = v.path || null
   }
+
   set thumb (v) {
     v = v || {}
     this._data.thumb.width = v.width || 0
@@ -63,6 +64,7 @@ export default class ImgMeta {
     this._data.thumb.url = v.url || null
     this._data.thumb.path = v.path || null
   }
+
   set colors (v) {
     v = v || {}
     this._data.colors.main = v.main || null
