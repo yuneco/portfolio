@@ -19,8 +19,8 @@ const ALLOWED_FORMATS = ['webp', 'jpg', 'jpeg', 'png']
 
 const galleryImageWebp = async (req, res) => {
   try {
-    const params = req.path.match(/([a-zA-Z0-9]+)\/([-_a-zA-Z0-9]+)\.([a-zA-Z0-9]+)\??.*$/)
-    const [, type, imgname, format] = params
+    const params = req.path.match(/([a-zA-Z0-9]+)\/([-_a-zA-Z0-9]+)(\.[a-zA-Z0-9]+)?(\?.*)?$/)
+    const [, type, imgname, ext] = params
     if (type !== TYPE_FULL && type !== TYPE_THUMB) {
       console.warn(`invalid type name: ${type}`)
       res.status(404).end()
@@ -31,6 +31,17 @@ const galleryImageWebp = async (req, res) => {
       res.status(404).end()
       return
     }
+
+    let format
+    if (!ext) {
+      // No extension = exec auto detect
+      const acceptHeader = req.get("Accept") || ""
+      const isSupportWebp = acceptHeader.includes("image/webp")
+      format = isSupportWebp ? "webp" : "jpeg"
+    } else {
+      format = ext.substr(1)
+    }
+    // Deny invalid image format
     if (!format || !ALLOWED_FORMATS.includes(format)) {
       console.warn(`invalid img name: ${imgname}`)
       res.status(404).end()
@@ -51,6 +62,11 @@ const galleryImageWebp = async (req, res) => {
 
     res.set('Content-Type', contentType);
     res.set('Cache-Control', `public, max-age=${age}, s-maxage=${age}`);
+    if (!ext) {
+      // add Vary header only for reqs that need auto detection
+      res.set('Vary', 'Accept-Encoding, Accept')
+    }
+
     res.status(200).send(buffer);
   } catch (err) {
     console.warn(err)
